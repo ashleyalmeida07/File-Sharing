@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
     <title>File Share - Send or Receive</title>
     <style>
         /* Reset and base styles */
@@ -232,7 +235,7 @@
 
         .file-actions {
             display: flex;
-            gap: 0.5rem;
+            gap: 1rem;
         }
 
         /* Receive section */
@@ -399,6 +402,104 @@
             100% { transform: rotate(360deg); }
         }
         
+
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 60px;
+        }
+        
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            text-align: center;
+            position: relative;
+            border-radius: 10px; /* Make edges rounder */
+        }
+        
+        .close {
+            color: #aaa;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+        }
+        
+        .copy-btn, .qr-btn {
+            padding: 0.75rem 1.5rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 500;
+            margin-left: 0.5rem;
+        }
+        
+        .copy-btn:hover, .qr-btn:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .file-actions {
+            display: flex;
+            gap: 0.5rem; /* Add gap between buttons */
+        }
+        
+        #qrCode {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1rem; /* Add gap between QR code and message */
+        }
+
+        .btn-secondary {
+            padding: 0.75rem 1.5rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 500;
+            margin-top: 1rem;
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        /* Hide the Scan QR Code button by default */
+        .scan-qr-btn {
+            display: none;
+        }
+
+        /* Show the Scan QR Code button only on small screens */
+        @media (max-width: 640px) {
+            .scan-qr-btn {
+                display: block;
+            }
+        }
+
+
+        
     </style>
 </head>
 <body>
@@ -450,7 +551,7 @@
                 <div class="file-list" id="fileList">
                     <!-- File items will be added here -->
                    
-                   
+                
                 </div>
                 
                 
@@ -461,6 +562,15 @@
                 
                 <div class="share-link" id="shareLink" style="display: none;">
                     <p>Copy the link and share it with the receiver to download the file</p>
+                </div>
+            </div>
+
+            <!-- QR Code Modal -->
+            <div id="qrCodeModal" class="modal">
+                <div class="modal-content">
+                    <span class="close" onclick="closeQrCodeModal()">&times;</span>
+                    <div id="qrCode" style="display: flex; justify-content: center;"></div>
+                    <p>Scan the QR code to download the file</p>
                 </div>
             </div>
 
@@ -482,8 +592,12 @@
                     <button class="btn btn-primary btn-block" id="downloadBtn">
                         <span class="btn-icon">📥</span> Access Files
                     </button>
+                    <button class="btn btn-secondary btn-block scan-qr-btn" onclick="scanQrCode()">
+                        <span class="btn-icon">📷</span> Scan QR Code
+                    </button>
                 </div>
             </div>
+
         </div>
     </div>
 
@@ -497,6 +611,8 @@
             const uploadArea = document.getElementById('uploadArea');
             const fileList = document.getElementById('fileList');
             const loadingSpinner = document.getElementById('loadingSpinner');
+            const qrCodeModal = document.getElementById('qrCodeModal');
+            const qrCodeElement = document.getElementById('qrCode');
             let filesToUpload = [];
         
             function showChoiceSection() {
@@ -525,7 +641,10 @@
                     <div class="file-info">
                         <div class="file-name">${fileName}</div>
                     </div>
-                    <button class="copy-btn" onclick="copyToClipboard('${fileUrl}')">Copy URL</button>
+                    <div class="file-actions">
+                        <button class="copy-btn" onclick="copyToClipboard('${fileUrl}')">Copy URL</button>
+                        <button class="qr-btn" onclick="generateQrCode('${fileUrl}')">QR Code</button>
+                    </div>
                 `;
                 return fileItem;
             }
@@ -537,7 +656,16 @@
                 tempInput.select();
                 document.execCommand('copy');
                 document.body.removeChild(tempInput);
-                alert('URL copied to clipboard');
+            }
+        
+            function generateQrCode(url) {
+                qrCodeElement.innerHTML = '';
+                new QRCode(qrCodeElement, url);
+                qrCodeModal.style.display = 'block';
+            }
+        
+            function closeQrCodeModal() {
+                qrCodeModal.style.display = 'none';
             }
         
             function showLoadingSpinner() {
@@ -546,6 +674,26 @@
         
             function hideLoadingSpinner() {
                 loadingSpinner.style.display = 'none';
+            }
+        
+            function scanQrCode() {
+                const html5QrCode = new Html5Qrcode("reader");
+                html5QrCode.start(
+                    { facingMode: "environment" }, // Use rear camera
+                    {
+                        fps: 10, // Scans per second
+                        qrbox: 250 // QR code scanning box size
+                    },
+                    qrCodeMessage => {
+                        document.getElementById('fileCode').value = qrCodeMessage;
+                        html5QrCode.stop();
+                    },
+                    errorMessage => {
+                        // Handle scan error
+                    }
+                ).catch(err => {
+                    // Handle start error
+                });
             }
         
             // Drag & Drop functionality
@@ -643,6 +791,9 @@
             window.showSendSection = showSendSection;
             window.showReceiveSection = showReceiveSection;
             window.copyToClipboard = copyToClipboard;
+            window.generateQrCode = generateQrCode;
+            window.closeQrCodeModal = closeQrCodeModal;
+            window.scanQrCode = scanQrCode;
         });
         
         // Download button functionality
@@ -653,6 +804,7 @@
             const downloadUrl = fileCode.startsWith('http') ? fileCode : `/download/${fileCode}`;
             window.location.href = downloadUrl;
         });
+
 
         // backend code 
 
