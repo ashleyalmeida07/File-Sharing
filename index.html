@@ -766,25 +766,33 @@ body {
                 loadingSpinner.style.display = 'none';
             }
         
-            function scanQrCode() {
-                const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-            
-                if (/android/i.test(userAgent)) {
-                    // Try opening Google Lens app directly
-                    window.location.href = 'googleapp://googlelens';
-                    
-                    // Alternative Intent (if the above doesn't work)
-                    setTimeout(() => {
-                        window.location.href = 'intent://lens.google.com/#Intent;scheme=https;package=com.google.android.googlequicksearchbox;end';
-                    }, 500);
-                } else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-                    // Open Google Lens in browser on iOS
-                    window.location.href = 'https://lens.google.com/';
-                } else {
-                    // Default fallback for other devices
-                    window.location.href = 'https://lens.google.com/';
-                }
-            }
+          function scanQrCode() {
+    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+    if (/android/i.test(userAgent)) {
+        // Attempt 1: Open Google Lens app directly via Google App
+        window.location.href = 'googleapp://googlelens';
+
+        // Attempt 2: Intent-based fallback for better device compatibility
+        setTimeout(() => {
+            window.location.href = 'intent://com.google.ar.lens/#Intent;scheme=android-app;end';
+        }, 500);
+
+        // Attempt 3: Open Lens via Google Search app (widely supported method)
+        setTimeout(() => {
+            window.location.href = 'https://lens.google.com/';
+        }, 1000);
+    } 
+    else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+        // iOS - Open Google Lens in browser
+        window.location.href = 'https://lens.google.com/';
+    } 
+    else {
+        // Other Devices
+        window.location.href = 'https://lens.google.com/';
+    }
+}
+
             
             
         
