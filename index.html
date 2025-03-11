@@ -8,497 +8,571 @@
     <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
     <title>File Share - Send or Receive</title>
     <style>
-        /* Reset and base styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+/* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 
-        :root {
-            --primary: #4f46e5;
-            --primary-dark: #4338ca;
-            --secondary: #f9fafb;
-            --text: #1f2937;
-            --text-light: #6b7280;
-            --border: #e5e7eb;
-            --success: #10b981;
-            --danger: #ef4444;
-        }
+:root {
+    --primary: #4f46e5;
+    --primary-dark: #4338ca;
+    --secondary: #f9fafb;
+    --text: #1f2937;
+    --text-light: #6b7280;
+    --border: #e5e7eb;
+    --success: #10b981;
+    --danger: #ef4444;
+}
 
-        body {
-            color: var(--text);
-            background-color: #f3f4f6;
-            line-height: 1.6;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem;
-        }
+body {
+    color: var(--text);
+    background-color: #f3f4f6;
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
 
-        .container {
-            width: 100%;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
+.container {
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+}
 
-        /* Logo */
-        .logo {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 2rem;
-            color: var(--primary);
-            margin-bottom: 2rem;
-            text-align: center;
-        }
+/* Logo */
+.logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 2rem;
+    color: var(--primary);
+    margin-bottom: 2rem;
+    text-align: center;
+}
 
-        .logo-icon {
-            margin-right: 0.5rem;
-            font-size: 2.25rem;
-        }
+.logo-icon {
+    margin-right: 0.5rem;
+    font-size: 2.25rem;
+}
 
-        /* Main content */
-        .main-content {
-            background-color: white;
-            border-radius: 1rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            overflow: hidden;
-        }
+/* Main content */
+.main-content {
+    background-color: white;
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+}
 
-        /* Choice section */
-        .choice-section {
-            padding: 3rem 2rem;
-            text-align: center;
-        }
+/* Choice section */
+.choice-section {
+    padding: 3rem 2rem;
+    text-align: center;
+}
 
-        .section-title {
-            font-size: 1.75rem;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-            color: var(--text);
-        }
+.section-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: var(--text);
+}
 
-        .section-subtitle {
-            font-size: 1.125rem;
-            color: var(--text-light);
-            margin-bottom: 2.5rem;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
+.section-subtitle {
+    font-size: 1.125rem;
+    color: var(--text-light);
+    margin-bottom: 2.5rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
 
-        .choice-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
+.choice-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
 
-        @media (max-width: 640px) {
-            .choice-buttons {
-                flex-direction: column;
-                gap: 1rem;
-            }
-        }
+@media (max-width: 640px) {
+    .choice-buttons {
+        flex-direction: column;
+        gap: 1rem;
+    }
+}
 
-        .choice-button {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 2rem;
-            border-radius: 0.75rem;
-            background-color: var(--secondary);
-            border: 2px solid var(--border);
-            cursor: pointer;
-            transition: all 0.2s;
-            width: 200px;
-        }
+@media (max-width: 360px) {
+    .choice-buttons {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}
 
-        @media (max-width: 640px) {
-            .choice-button {
-                width: 100%;
-            }
-        }
+.choice-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    border-radius: 0.75rem;
+    background-color: var(--secondary);
+    border: 2px solid var(--border);
+    cursor: pointer;
+    transition: all 0.2s;
+    width: 200px;
+}
 
-        .choice-button:hover {
-            border-color: var(--primary);
-            transform: translateY(-5px);
-        }
+@media (max-width: 640px) {
+    .choice-button {
+        width: 100%;
+    }
+}
 
-        .choice-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            color: var(--primary);
-        }
+@media (max-width: 360px) {
+    .choice-button {
+        padding: 1rem;
+    }
+}
 
-        .choice-label {
-            font-weight: 600;
-            font-size: 1.25rem;
-        }
+.choice-button:hover {
+    border-color: var(--primary);
+    transform: translateY(-5px);
+}
 
-        /* Send section */
-        .send-section, .receive-section {
-            display: none;
-            padding: 3rem 2rem;
-        }
+.choice-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: var(--primary);
+}
 
-        .send-section.active, .receive-section.active {
-            display: block;
-        }
+.choice-label {
+    font-weight: 600;
+    font-size: 1.25rem;
+}
 
-        .back-button {
-            display: inline-flex;
-            align-items: center;
-            color: var(--text-light);
-            margin-bottom: 2rem;
-            cursor: pointer;
-            transition: color 0.2s;
-        }
+/* Send section */
+.send-section, .receive-section {
+    display: none;
+    padding: 3rem 2rem;
+}
 
-        .back-button:hover {
-            color: var(--primary);
-        }
+.send-section.active, .receive-section.active {
+    display: block;
+}
 
-        .back-icon {
-            margin-right: 0.5rem;
-        }
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    color: var(--text-light);
+    margin-bottom: 2rem;
+    cursor: pointer;
+    transition: color 0.2s;
+}
 
-        /* Upload area */
-        .upload-area {
-            border: 2px dashed var(--border);
-            border-radius: 0.75rem;
-            padding: 3rem 2rem;
-            text-align: center;
-            cursor: pointer;
-            transition: border-color 0.2s;
-            margin-bottom: 1.5rem;
-        }
+.back-button:hover {
+    color: var(--primary);
+}
 
-        .upload-area:hover {
-            border-color: var(--primary);
-        }
+.back-icon {
+    margin-right: 0.5rem;
+}
 
-        .upload-icon {
-            font-size: 3rem;
-            color: var(--primary);
-            margin-bottom: 1rem;
-        }
+/* Upload area */
+.upload-area {
+    border: 2px dashed var(--border);
+    border-radius: 0.75rem;
+    padding: 3rem 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.2s;
+    margin-bottom: 1.5rem;
+}
 
-        .upload-text {
-            font-size: 1.125rem;
-            margin-bottom: 0.5rem;
-        }
+.upload-area:hover {
+    border-color: var(--primary);
+}
 
-        .upload-subtext {
-            color: var(--text-light);
-            font-size: 0.875rem;
-        }
+.upload-icon {
+    font-size: 3rem;
+    color: var(--primary);
+    margin-bottom: 1rem;
+}
 
-        /* File list */
-        .file-list {
-            margin-top: 2rem;
-        }
+.upload-text {
+    font-size: 1.125rem;
+    margin-bottom: 0.5rem;
+}
 
-        .file-item {
-            display: flex;
-            align-items: center;
-            padding: 1rem;
-            border-radius: 0.5rem;
-            background-color: var(--secondary);
-            margin-bottom: 0.75rem;
-        }
+.upload-subtext {
+    color: var(--text-light);
+    font-size: 0.875rem;
+}
 
-        .file-icon {
-            font-size: 1.5rem;
-            margin-right: 1rem;
-            color: var(--primary);
-        }
+/* File list */
+.file-list {
+    margin-top: 2rem;
+}
 
-        .file-info {
-            flex: 1;
-        }
+.file-item {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    background-color: var(--secondary);
+    margin-bottom: 0.75rem;
+    flex-wrap: wrap; /* Allow wrapping */
+}
 
-        .file-name {
-            font-weight: 500;
-            margin-bottom: 0.25rem;
-        }
+.file-icon {
+    font-size: 1.5rem;
+    margin-right: 1rem;
+    color: var(--primary);
+}
 
-        .file-size {
-            font-size: 0.875rem;
-            color: var(--text-light);
-        }
+.file-info {
+    flex: 1;
+    min-width: 150px; /* Ensure minimum width */
+}
 
-        .file-actions {
-            display: flex;
-            gap: 1rem;
-        }
+.file-name {
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+}
 
-        /* Receive section */
-        .receive-form {
-            max-width: 500px;
-            margin: 0 auto;
-        }
+.file-size {
+    font-size: 0.875rem;
+    color: var(--text-light);
+}
 
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
+.file-actions {
+    display: flex;
+    gap: 0.5rem; /* Add gap between buttons */
+    flex-wrap: wrap; /* Allow wrapping */
+}
 
-        .form-label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-        }
+.copy-btn, .qr-btn {
+    padding: 0.75rem 1.5rem;
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-weight: 500;
+}
 
-        .form-input {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            border-radius: 0.5rem;
-            border: 1px solid var(--border);
-            font-size: 1rem;
-        }
+.copy-btn:hover, .qr-btn:hover {
+    background-color: var(--primary-dark);
+}
 
-        .form-input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
-        }
+/* Receive section */
+.receive-form {
+    max-width: 500px;
+    margin: 0 auto;
+}
 
-        /* Buttons */
-        .btn {
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.5rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
-            border: none;
-            font-size: 1rem;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-        }
+.form-group {
+    margin-bottom: 1.5rem;
+}
 
-        .btn-primary {
-            background-color: var(--primary);
-            color: white;
-        }
+.form-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
 
-        .btn-primary:hover {
-            background-color: var(--primary-dark);
-        }
+.form-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--border);
+    font-size: 1rem;
+}
 
-        .btn-outline {
-            background: transparent;
-            border: 1px solid var(--border);
-            color: var(--text);
-        }
+.form-input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+}
 
-        .btn-outline:hover {
-            border-color: var(--primary);
-            color: var(--primary);
-        }
+/* Buttons */
+.btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+    font-size: 1rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
 
-        .btn-icon {
-            margin-right: 0.5rem;
-        }
+.btn-primary {
+    background-color: var(--primary);
+    color: white;
+}
 
-        .btn-block {
-            display: block;
-            width: 100%;
-        }
+.btn-primary:hover {
+    background-color: var(--primary-dark);
+}
 
-        /* Options */
-        .options {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 1.5rem;
-        }
+.btn-outline {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+}
 
-        .expiry-select {
-            padding: 0.75rem 1rem;
-            border-radius: 0.5rem;
-            border: 1px solid var(--border);
-            background-color: white;
-            color: var(--text);
-            font-size: 1rem;
-        }
+.btn-outline:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+}
 
-        /* Success message */
-        .success-message {
-            background-color: rgba(16, 185, 129, 0.1);
-            border: 1px solid var(--success);
-            color: var(--success);
-            padding: 1rem;
-            border-radius: 0.5rem;
-            margin-top: 2rem;
-            display: flex;
-            align-items: center;
-        }
+.btn-icon {
+    margin-right: 0.5rem;
+}
 
-        .success-icon {
-            margin-right: 0.75rem;
-            font-size: 1.25rem;
-        }
+.btn-block {
+    display: block;
+    width: 100%;
+}
 
-        /* Share link */
-        .share-link {
-            display: flex;
-            margin-top: 1.5rem;
-        }
+/* Options */
+.options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1.5rem;
+}
 
-        .link-input {
-            flex: 1;
-            padding: 0.75rem 1rem;
-            border: 1px solid var(--border);
-            border-right: none;
-            border-radius: 0.5rem 0 0 0.5rem;
-            font-size: 1rem;
-            background-color: var(--secondary);
-        }
+.expiry-select {
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--border);
+    background-color: white;
+    color: var(--text);
+    font-size: 1rem;
+}
 
-        .copy-btn {
-            padding: 0.75rem 1.5rem;
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 0 0.5rem 0.5rem 0;
-            cursor: pointer;
-            font-weight: 500;
-        }
+/* Success message */
+.success-message {
+    background-color: rgba(16, 185, 129, 0.1);
+    border: 1px solid var(--success);
+    color: var(--success);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-top: 2rem;
+    display: flex;
+    align-items: center;
+}
 
-        .copy-btn:hover {
-            background-color: var(--primary-dark);
-        }
+.success-icon {
+    margin-right: 0.75rem;
+    font-size: 1.25rem;
+}
 
-        .loading-spinner {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background-color: rgba(0, 0, 0, 0.7);
-            color: white;
-            padding: 10px;
-            border-radius: 5px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .spinner {
-            border: 4px solid rgba(255, 255, 255, 0.3);
-            border-top: 4px solid white;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            animation: spin 1s linear infinite;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
+/* Share link */
+.share-link {
+    display: flex;
+    margin-top: 1.5rem;
+}
 
+.link-input {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border);
+    border-right: none;
+    border-radius: 0.5rem 0 0 0.5rem;
+    font-size: 1rem;
+    background-color: var(--secondary);
+}
 
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.4);
-            padding-top: 60px;
-        }
-        
-        .modal-content {
-            background-color: #fefefe;
-            margin: 5% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-            max-width: 500px;
-            text-align: center;
-            position: relative;
-            border-radius: 10px; /* Make edges rounder */
-        }
-        
-        .close {
-            color: #aaa;
-            position: absolute;
-            top: 10px;
-            right: 20px;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-        }
-        
-        .copy-btn, .qr-btn {
-            padding: 0.75rem 1.5rem;
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 0.5rem;
-            cursor: pointer;
-            font-weight: 500;
-            margin-left: 0.5rem;
-        }
-        
-        .copy-btn:hover, .qr-btn:hover {
-            background-color: var(--primary-dark);
-        }
-        
-        .file-actions {
-            display: flex;
-            gap: 0.5rem; /* Add gap between buttons */
-        }
-        
+.loading-spinner {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.spinner {
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-top: 4px solid white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+    padding-top: 60px;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    text-align: center;
+    position: relative;
+    border-radius: 10px; /* Make edges rounder */
+}
+
+.close {
+    color: #aaa;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+}
+
+#qrCode {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem; /* Add gap between QR code and message */
+}
+
+.btn-secondary {
+    padding: 0.75rem 1.5rem;
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-weight: 500;
+    margin-top: 1rem;
+}
+
+.btn-secondary:hover {
+    background-color: var(--primary-dark);
+}
+
+/* Hide the Scan QR Code button by default */
+.scan-qr-btn {
+    display: none;
+}
+
+/* Show the Scan QR Code button only on small screens */
+@media (max-width: 640px) {
+    .scan-qr-btn {
+        display: block;
+    }
+}
+
+@media (max-width: 360px) {
+    .choice-buttons {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+            
         #qrCode {
             display: flex;
             justify-content: center;
-            margin-bottom: 1rem; /* Add gap between QR code and message */
+            margin-bottom: 0.5rem; /* Add gap between QR code and message */
+            width: 200px;
+            height: 200px;         
+            margin-top: 33px;
+            margin-left: 30px;   
+            
         }
 
-        .btn-secondary {
-            padding: 0.75rem 1.5rem;
+        .copy-btn, .qr-btn {
+            padding: 0.60rem 1rem;
             background-color: var(--primary);
             color: white;
             border: none;
             border-radius: 0.5rem;
             cursor: pointer;
-            font-weight: 500;
-            margin-top: 1rem;
-        }
-        
-        .btn-secondary:hover {
-            background-color: var(--primary-dark);
+            font-weight: 400;
         }
 
-        /* Hide the Scan QR Code button by default */
-        .scan-qr-btn {
-            display: none;
-        }
+    .choice-button {
+        padding: 1rem;
+    }
 
-        /* Show the Scan QR Code button only on small screens */
-        @media (max-width: 640px) {
-            .scan-qr-btn {
-                display: block;
-            }
-        }
+    .upload-area {
+        padding: 2rem 1rem;
+    }
 
+    .upload-icon {
+        font-size: 2rem;
+    }
 
+    .upload-text {
+        font-size: 1rem;
+    }
+
+    .upload-subtext {
+        font-size: 0.75rem;
+    }
+
+    .file-item {
+        padding: 0.75rem;
+    }
+
+    .file-icon {
+        font-size: 1.25rem;
+    }
+
+    .file-name {
+        font-size: 0.875rem;
+    }
+
+    .file-size {
+        font-size: 0.75rem;
+    }
+
+    .form-input {
+        padding: 0.5rem 0.75rem;
+    }
+
+    .btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+    }
+
+    .modal-content {
+        padding: 10px;
+    }
+
+    .close {
+        font-size: 24px;
+    }
+}
         
     </style>
 </head>
@@ -613,6 +687,7 @@
             const loadingSpinner = document.getElementById('loadingSpinner');
             const qrCodeModal = document.getElementById('qrCodeModal');
             const qrCodeElement = document.getElementById('qrCode');
+            const qrCodeReaderModal = document.getElementById('qrCodeReaderModal');
             let filesToUpload = [];
         
             function showChoiceSection() {
@@ -656,6 +731,7 @@
                 tempInput.select();
                 document.execCommand('copy');
                 document.body.removeChild(tempInput);
+                alert('URL copied to clipboard');
             }
         
             function generateQrCode(url) {
@@ -668,6 +744,20 @@
                 qrCodeModal.style.display = 'none';
             }
         
+            function closeQrCodeReaderModal() {
+                qrCodeReaderModal.style.display = 'none';
+                Html5Qrcode.getCameras().then(cameras => {
+                    if (cameras && cameras.length) {
+                        const html5QrCode = new Html5Qrcode("reader");
+                        html5QrCode.stop().catch(err => {
+                            console.error("Failed to stop QR code scanner.", err);
+                        });
+                    }
+                }).catch(err => {
+                    console.error("Failed to get cameras.", err);
+                });
+            }
+        
             function showLoadingSpinner() {
                 loadingSpinner.style.display = 'flex';
             }
@@ -677,22 +767,33 @@
             }
         
             function scanQrCode() {
-                const html5QrCode = new Html5Qrcode("reader");
-                html5QrCode.start(
-                    { facingMode: "environment" }, // Use rear camera
-                    {
-                        fps: 10, // Scans per second
-                        qrbox: 250 // QR code scanning box size
-                    },
-                    qrCodeMessage => {
-                        document.getElementById('fileCode').value = qrCodeMessage;
-                        html5QrCode.stop();
-                    },
-                    errorMessage => {
-                        // Handle scan error
+                qrCodeReaderModal.style.display = 'block';
+                Html5Qrcode.getCameras().then(cameras => {
+                    if (cameras && cameras.length) {
+                        const html5QrCode = new Html5Qrcode("reader");
+                        html5QrCode.start(
+                            { facingMode: "environment" }, // Use rear camera
+                            {
+                                fps: 10, // Scans per second
+                                qrbox: 250 // QR code scanning box size
+                            },
+                            qrCodeMessage => {
+                                document.getElementById('fileCode').value = qrCodeMessage;
+                                html5QrCode.stop().then(() => {
+                                    qrCodeReaderModal.style.display = 'none';
+                                }).catch(err => {
+                                    console.error("Failed to stop QR code scanner.", err);
+                                });
+                            },
+                            errorMessage => {
+                                // Handle scan error
+                            }
+                        ).catch(err => {
+                            console.error("Failed to start QR code scanner.", err);
+                        });
                     }
-                ).catch(err => {
-                    // Handle start error
+                }).catch(err => {
+                    console.error("Failed to get cameras.", err);
                 });
             }
         
@@ -794,6 +895,7 @@
             window.generateQrCode = generateQrCode;
             window.closeQrCodeModal = closeQrCodeModal;
             window.scanQrCode = scanQrCode;
+            window.closeQrCodeReaderModal = closeQrCodeReaderModal;
         });
         
         // Download button functionality
