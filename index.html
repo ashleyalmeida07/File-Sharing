@@ -768,17 +768,24 @@ body {
         
             function scanQrCode() {
                 const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+            
                 if (/android/i.test(userAgent)) {
-                    // Redirect to Google Lens on Android
-                    window.location.href = 'intent://lens.google.com/#Intent;scheme=https;package=com.google.android.googlequicksearchbox;end';
+                    // Try opening Google Lens app directly
+                    window.location.href = 'googleapp://googlelens';
+                    
+                    // Alternative Intent (if the above doesn't work)
+                    setTimeout(() => {
+                        window.location.href = 'intent://lens.google.com/#Intent;scheme=https;package=com.google.android.googlequicksearchbox;end';
+                    }, 500);
                 } else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-                    // Fallback for iOS users
+                    // Open Google Lens in browser on iOS
                     window.location.href = 'https://lens.google.com/';
                 } else {
-                    // Fallback for other users
+                    // Default fallback for other devices
                     window.location.href = 'https://lens.google.com/';
                 }
             }
+            
             
         
             // Drag & Drop functionality
