@@ -631,7 +631,7 @@ body {
                 
                 <div class="success-message" id="successMessage" style="display: none;">
                     <span class="success-icon">✅</span>
-                    Files uploaded successfully! Share the link below.
+                    Files uploaded successfully!
                 </div>
                 
                 <div class="share-link" id="shareLink" style="display: none;">
@@ -767,34 +767,17 @@ body {
             }
         
             function scanQrCode() {
-                qrCodeReaderModal.style.display = 'block';
-                Html5Qrcode.getCameras().then(cameras => {
-                    if (cameras && cameras.length) {
-                        const html5QrCode = new Html5Qrcode("reader");
-                        html5QrCode.start(
-                            { facingMode: "environment" }, // Use rear camera
-                            {
-                                fps: 10, // Scans per second
-                                qrbox: 250 // QR code scanning box size
-                            },
-                            qrCodeMessage => {
-                                document.getElementById('fileCode').value = qrCodeMessage;
-                                html5QrCode.stop().then(() => {
-                                    qrCodeReaderModal.style.display = 'none';
-                                }).catch(err => {
-                                    console.error("Failed to stop QR code scanner.", err);
-                                });
-                            },
-                            errorMessage => {
-                                // Handle scan error
-                            }
-                        ).catch(err => {
-                            console.error("Failed to start QR code scanner.", err);
-                        });
-                    }
-                }).catch(err => {
-                    console.error("Failed to get cameras.", err);
-                });
+                const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+                if (/android/i.test(userAgent)) {
+                    // Redirect to Google Lens on Android
+                    window.location.href = 'intent://lens.google.com/#Intent;scheme=https;package=com.google.android.googlequicksearchbox;end';
+                } else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+                    // Fallback for iOS users
+                    window.location.href = 'https://lens.google.com/';
+                } else {
+                    // Fallback for other users
+                    window.location.href = 'https://lens.google.com/';
+                }
             }
         
             // Drag & Drop functionality
@@ -906,8 +889,38 @@ body {
             const downloadUrl = fileCode.startsWith('http') ? fileCode : `/download/${fileCode}`;
             window.location.href = downloadUrl;
         });
+        
+        // Backend code for uploading files
+        document.getElementById('uploadBtn').addEventListener('click', async () => {
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.onchange = async (event) => {
+                const file = event.target.files[0];
+                if (!file) return;
+        
+                const formData = new FormData();
+                formData.append('file', file);
+        
+                const response = await fetch('/upload', {
+                    method: 'POST',
+                    body: formData,
+                });
+        
+                const result = await response.json();
+                if (result.link) {
+                    document.getElementById('successMessage').style.display = 'flex';
+                    const shareLink = document.getElementById('shareLink');
+                    shareLink.style.display = 'flex';
+                    shareLink.querySelector('.link-input').value = window.location.origin + result.link;
+                } else {
+                    alert('Error uploading file');
+                }
+            };
+            fileInput.click();
+        });
 
 
+        
         // backend code 
 
         document.getElementById('uploadBtn').addEventListener('click', async () => {
