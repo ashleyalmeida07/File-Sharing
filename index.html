@@ -659,8 +659,8 @@ body {
                 
                 <div class="receive-form">
                     <div class="form-group">
-                        <label for="fileCode" class="form-label">File Code or Link</label>
-                        <input type="text" id="fileCode" class="form-input" placeholder="Enter code or paste link here">
+                        <label for="fileCode" class="form-label">File Link</label>
+                        <input type="text" id="fileCode"  value="https://file-sharing-42v1.onrender.com/"   class="form-input" placeholder="Enter code or paste link here">
                     </div>
                     
                     <button class="btn btn-primary btn-block" id="downloadBtn">
@@ -766,33 +766,33 @@ body {
                 loadingSpinner.style.display = 'none';
             }
         
-          function scanQrCode() {
-    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-
-    if (/android/i.test(userAgent)) {
-        // Attempt 1: Open Google Lens app directly via Google App
-        window.location.href = 'googleapp://googlelens';
-
-        // Attempt 2: Intent-based fallback for better device compatibility
-        setTimeout(() => {
-            window.location.href = 'intent://com.google.ar.lens/#Intent;scheme=android-app;end';
-        }, 500);
-
-        // Attempt 3: Open Lens via Google Search app (widely supported method)
-        setTimeout(() => {
-            window.location.href = 'https://lens.google.com/';
-        }, 1000);
-    } 
-    else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-        // iOS - Open Google Lens in browser
-        window.location.href = 'https://lens.google.com/';
-    } 
-    else {
-        // Other Devices
-        window.location.href = 'https://lens.google.com/';
-    }
-}
-
+            function scanQrCode() {
+                const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+            
+                if (/android/i.test(userAgent)) {
+                    // Attempt 1: Open Google Lens app directly via Google App
+                    window.location.href = 'googleapp://googlelens';
+            
+                    // Attempt 2: Intent-based fallback for better device compatibility
+                    setTimeout(() => {
+                        window.location.href = 'intent://com.google.ar.lens/#Intent;scheme=android-app;end';
+                    }, 500);
+            
+                    // Attempt 3: Open Lens via Google Search app (widely supported method)
+                    setTimeout(() => {
+                        window.location.href = 'https://lens.google.com/';
+                    }, 1000);
+                } 
+                else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+                    // iOS - Open Google Lens in browser
+                    window.location.href = 'https://lens.google.com/';
+                } 
+                else {
+                    // Other Devices
+                    window.location.href = 'https://lens.google.com/';
+                }
+            }
+            
             
             
         
