@@ -4,27 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- SEO Meta Tags -->
-    <title>FileShare — Instant File Sharing with 6-Digit Codes | Fast & Secure</title>
-    <meta name="description" content="Share files instantly with a simple 6-digit code. No sign-up required. Transfer files between PC and phone in seconds using QR codes or short codes.">
-    <meta name="keywords" content="file sharing, file transfer, QR code sharing, 6-digit code, send files, receive files, fast file sharing, secure file transfer">
+    <meta name="description" content="Share files instantly between devices using a simple 6-digit code. No signup required. Upload from phone, download on PC — fast, free, and secure file sharing.">
+    <meta name="keywords" content="file sharing, send files, receive files, QR code file transfer, 6-digit code sharing, cross-device file transfer">
     <meta name="author" content="Ashley Almeida">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://filesharing-ob0e.onrender.com/">
-
     <!-- Open Graph -->
     <meta property="og:title" content="FileShare — Instant File Sharing with 6-Digit Codes">
-    <meta property="og:description" content="Share files instantly with a simple 6-digit code. No sign-up required. Transfer between PC and phone in seconds.">
+    <meta property="og:description" content="Share files between devices instantly. Upload a file, get a 6-digit code, and download anywhere. No signup needed.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://filesharing-ob0e.onrender.com/">
-    <meta property="og:site_name" content="FileShare">
-
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="FileShare — Instant File Sharing with 6-Digit Codes">
-    <meta name="twitter:description" content="Share files instantly with a simple 6-digit code. No sign-up. Fast PC ↔ Phone transfers.">
-
     <!-- Structured Data -->
     <script type="application/ld+json">
     {
@@ -32,8 +21,8 @@
         "@type": "WebApplication",
         "name": "FileShare",
         "url": "https://filesharing-ob0e.onrender.com/",
-        "description": "Instant file sharing platform with 6-digit codes and QR code support for fast cross-device transfers.",
-        "applicationCategory": "UtilityApplication",
+        "description": "Instant file sharing between devices using simple 6-digit codes and QR codes. No signup required.",
+        "applicationCategory": "UtilitiesApplication",
         "operatingSystem": "Any",
         "offers": {
             "@type": "Offer",
@@ -46,252 +35,161 @@
         }
     }
     </script>
-
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-    <!-- QR Code Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-
+    <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
+    <title>FileShare — Instant File Sharing with 6-Digit Codes | Free & Secure</title>
     <style>
-        /* ═══════════════════════════════════════════
-           RESET & DESIGN TOKENS
-        ═══════════════════════════════════════════ */
-        *,
-        *::before,
-        *::after {
+        /* Reset and base styles */
+        * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         :root {
-            --bg-primary: #0a0e1a;
-            --bg-secondary: #111827;
-            --bg-card: rgba(17, 24, 39, 0.7);
-            --bg-glass: rgba(255, 255, 255, 0.04);
-            --bg-glass-hover: rgba(255, 255, 255, 0.08);
-
-            --accent: #6366f1;
-            --accent-light: #818cf8;
-            --accent-glow: rgba(99, 102, 241, 0.3);
-            --accent-gradient: linear-gradient(135deg, #6366f1, #8b5cf6, #a78bfa);
-            --accent-gradient-h: linear-gradient(135deg, #818cf8, #a78bfa, #c4b5fd);
-
+            --primary: #4f46e5;
+            --primary-dark: #4338ca;
+            --secondary: #f9fafb;
+            --text: #1f2937;
+            --text-light: #6b7280;
+            --border: #e5e7eb;
             --success: #10b981;
-            --success-bg: rgba(16, 185, 129, 0.12);
             --danger: #ef4444;
-
-            --text-primary: #f1f5f9;
-            --text-secondary: #94a3b8;
-            --text-muted: #64748b;
-
-            --border: rgba(255, 255, 255, 0.08);
-            --border-hover: rgba(255, 255, 255, 0.15);
-            --border-accent: rgba(99, 102, 241, 0.4);
-
-            --radius-sm: 0.5rem;
-            --radius-md: 0.75rem;
-            --radius-lg: 1rem;
-            --radius-xl: 1.5rem;
-
-            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
-            --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.4);
-            --shadow-lg: 0 16px 64px rgba(0, 0, 0, 0.5);
-            --shadow-glow: 0 0 40px var(--accent-glow);
         }
 
-        /* ═══════════════════════════════════════════
-           BASE STYLES
-        ═══════════════════════════════════════════ */
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
+            color: var(--text);
+            background-color: #f3f4f6;
             line-height: 1.6;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 1.5rem;
-            overflow-x: hidden;
+            padding: 2rem;
         }
 
-        /* Animated gradient background */
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background:
-                radial-gradient(ellipse 80% 60% at 20% 10%, rgba(99, 102, 241, 0.12) 0%, transparent 60%),
-                radial-gradient(ellipse 60% 50% at 80% 90%, rgba(139, 92, 246, 0.10) 0%, transparent 60%),
-                radial-gradient(ellipse 50% 40% at 50% 50%, rgba(167, 139, 250, 0.05) 0%, transparent 60%);
-            pointer-events: none;
-            z-index: 0;
-            animation: bgPulse 8s ease-in-out infinite alternate;
-        }
-
-        @keyframes bgPulse {
-            0% { opacity: 0.7; }
-            100% { opacity: 1; }
-        }
-
-        /* ═══════════════════════════════════════════
-           CONTAINER & LAYOUT
-        ═══════════════════════════════════════════ */
         .container {
             width: 100%;
-            max-width: 720px;
-            position: relative;
-            z-index: 1;
-            animation: fadeInUp 0.6s ease-out;
+            max-width: 1000px;
+            margin: 0 auto;
         }
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(24px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* ═══════════════════════════════════════════
-           LOGO
-        ═══════════════════════════════════════════ */
+        /* Logo */
         .logo {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 0.625rem;
-            font-weight: 800;
-            font-size: 1.75rem;
+            font-weight: 700;
+            font-size: 2rem;
+            color: var(--primary);
             margin-bottom: 2rem;
-            letter-spacing: -0.02em;
+            text-align: center;
         }
 
         .logo-icon {
-            width: 42px;
-            height: 42px;
-            background: var(--accent-gradient);
-            border-radius: var(--radius-md);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.25rem;
-            box-shadow: var(--shadow-glow);
+            margin-right: 0.5rem;
+            font-size: 2.25rem;
         }
 
-        .logo-text {
-            background: var(--accent-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        /* ═══════════════════════════════════════════
-           MAIN CARD (Glassmorphism)
-        ═══════════════════════════════════════════ */
+        /* Main content */
         .main-content {
-            background: var(--bg-card);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-xl);
-            box-shadow: var(--shadow-lg);
+            background-color: white;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
             overflow: hidden;
-            transition: border-color 0.3s ease;
         }
 
-        .main-content:hover {
-            border-color: var(--border-hover);
-        }
-
-        /* ═══════════════════════════════════════════
-           SECTIONS (Choice / Send / Receive)
-        ═══════════════════════════════════════════ */
+        /* Choice section */
         .choice-section {
             padding: 3rem 2rem;
             text-align: center;
         }
 
         .section-title {
-            font-size: 1.625rem;
+            font-size: 1.75rem;
             font-weight: 700;
-            margin-bottom: 0.75rem;
-            letter-spacing: -0.02em;
-            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            color: var(--text);
         }
 
         .section-subtitle {
-            font-size: 1rem;
-            color: var(--text-secondary);
+            font-size: 1.125rem;
+            color: var(--text-light);
             margin-bottom: 2.5rem;
-            max-width: 480px;
+            max-width: 600px;
             margin-left: auto;
             margin-right: auto;
-            line-height: 1.7;
         }
 
-        /* Choice Buttons */
         .choice-buttons {
             display: flex;
             justify-content: center;
-            gap: 1.25rem;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 640px) {
+            .choice-buttons {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .choice-buttons {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
         }
 
         .choice-button {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 0.75rem;
-            padding: 2rem 2.5rem;
-            border-radius: var(--radius-lg);
-            background: var(--bg-glass);
-            border: 1px solid var(--border);
+            padding: 2rem;
+            border-radius: 0.75rem;
+            background-color: var(--secondary);
+            border: 2px solid var(--border);
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            min-width: 180px;
+            transition: all 0.2s;
+            width: 200px;
+        }
+
+        @media (max-width: 640px) {
+            .choice-button {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .choice-button {
+                padding: 1rem;
+            }
         }
 
         .choice-button:hover {
-            background: var(--bg-glass-hover);
-            border-color: var(--border-accent);
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-glow);
+            border-color: var(--primary);
+            transform: translateY(-5px);
         }
 
         .choice-icon {
-            width: 56px;
-            height: 56px;
-            border-radius: var(--radius-md);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.75rem;
-            background: var(--accent-gradient);
-            box-shadow: 0 4px 16px var(--accent-glow);
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
         }
 
         .choice-label {
             font-weight: 600;
-            font-size: 1.05rem;
-            color: var(--text-primary);
+            font-size: 1.25rem;
         }
 
-        /* ═══════════════════════════════════════════
-           SEND & RECEIVE SECTIONS
-        ═══════════════════════════════════════════ */
+        /* Send section */
         .send-section,
         .receive-section {
             display: none;
-            padding: 2.5rem 2rem;
-            animation: fadeInUp 0.4s ease-out;
+            padding: 3rem 2rem;
         }
 
         .send-section.active,
@@ -299,1064 +197,1028 @@
             display: block;
         }
 
-        /* Back button */
         .back-button {
             display: inline-flex;
             align-items: center;
-            gap: 0.5rem;
-            color: var(--text-muted);
-            margin-bottom: 1.75rem;
+            color: var(--text-light);
+            margin-bottom: 2rem;
             cursor: pointer;
-            font-size: 0.9rem;
-            font-weight: 500;
             transition: color 0.2s;
-            border: none;
-            background: none;
         }
 
         .back-button:hover {
-            color: var(--accent-light);
+            color: var(--primary);
         }
 
-        .back-button svg {
-            width: 16px;
-            height: 16px;
+        .back-icon {
+            margin-right: 0.5rem;
         }
 
-        /* ═══════════════════════════════════════════
-           UPLOAD AREA
-        ═══════════════════════════════════════════ */
+        /* Upload area */
         .upload-area {
             border: 2px dashed var(--border);
-            border-radius: var(--radius-lg);
+            border-radius: 0.75rem;
             padding: 3rem 2rem;
             text-align: center;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: border-color 0.2s;
             margin-bottom: 1.5rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .upload-area::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: var(--accent-gradient);
-            opacity: 0;
-            transition: opacity 0.3s ease;
         }
 
         .upload-area:hover {
-            border-color: var(--accent);
-            box-shadow: inset 0 0 30px rgba(99, 102, 241, 0.06);
+            border-color: var(--primary);
         }
 
-        .upload-area:hover::before {
-            opacity: 0.03;
-        }
-
-        .upload-area.dragover {
-            border-color: var(--accent);
-            background: rgba(99, 102, 241, 0.06);
-        }
-
-        .upload-icon-wrap {
-            width: 64px;
-            height: 64px;
-            border-radius: 50%;
-            background: var(--bg-glass);
-            border: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 1rem;
-            font-size: 1.75rem;
-            position: relative;
+        .upload-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
         }
 
         .upload-text {
-            font-size: 1.05rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 0.25rem;
-            position: relative;
+            font-size: 1.125rem;
+            margin-bottom: 0.5rem;
         }
 
         .upload-subtext {
-            color: var(--text-muted);
+            color: var(--text-light);
             font-size: 0.875rem;
-            position: relative;
         }
 
-        /* ═══════════════════════════════════════════
-           FILE LIST (after upload)
-        ═══════════════════════════════════════════ */
+        /* File list */
         .file-list {
-            margin-top: 1.5rem;
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
+            margin-top: 2rem;
         }
 
         .file-item {
             display: flex;
             align-items: center;
-            padding: 1rem 1.25rem;
-            border-radius: var(--radius-md);
-            background: var(--bg-glass);
-            border: 1px solid var(--border);
-            gap: 1rem;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            background-color: var(--secondary);
+            margin-bottom: 0.75rem;
             flex-wrap: wrap;
-            animation: fadeInUp 0.35s ease-out;
+            /* Allow wrapping */
         }
 
-        .file-icon-wrap {
-            width: 40px;
-            height: 40px;
-            border-radius: var(--radius-sm);
-            background: var(--accent-gradient);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.1rem;
-            flex-shrink: 0;
+        .file-icon {
+            font-size: 1.5rem;
+            margin-right: 1rem;
+            color: var(--primary);
         }
 
         .file-info {
             flex: 1;
-            min-width: 120px;
+            min-width: 150px;
+            /* Ensure minimum width */
         }
 
         .file-name {
-            font-weight: 600;
-            font-size: 0.925rem;
-            color: var(--text-primary);
-            word-break: break-all;
+            font-weight: 500;
+            margin-bottom: 0.25rem;
         }
 
-        .file-code-display {
-            font-size: 0.8rem;
-            color: var(--accent-light);
-            font-weight: 500;
-            margin-top: 0.15rem;
+        .file-size {
+            font-size: 0.875rem;
+            color: var(--text-light);
         }
 
         .file-actions {
             display: flex;
             gap: 0.5rem;
+            /* Add gap between buttons */
             flex-wrap: wrap;
+            /* Allow wrapping */
         }
 
-        /* ═══════════════════════════════════════════
-           CODE DISPLAY (prominent after upload)
-        ═══════════════════════════════════════════ */
-        .code-display-section {
-            display: none;
-            text-align: center;
-            padding: 1.5rem;
-            margin-top: 1.5rem;
-            border-radius: var(--radius-lg);
-            background: var(--bg-glass);
-            border: 1px solid var(--border-accent);
-            animation: fadeInUp 0.4s ease-out;
-        }
-
-        .code-display-section.active {
-            display: block;
-        }
-
-        .code-display-label {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            font-weight: 500;
-            margin-bottom: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-        }
-
-        .code-display-value {
-            font-size: 2.5rem;
-            font-weight: 800;
-            letter-spacing: 0.3em;
-            background: var(--accent-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 0.75rem;
-            font-family: 'Inter', monospace;
-        }
-
-        .code-display-hint {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            margin-bottom: 1rem;
-        }
-
-        .code-copy-btn {
-            padding: 0.6rem 1.5rem;
-            border: 1px solid var(--border-accent);
-            background: rgba(99, 102, 241, 0.1);
-            color: var(--accent-light);
-            border-radius: var(--radius-md);
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.875rem;
-            font-family: inherit;
-            transition: all 0.2s;
-        }
-
-        .code-copy-btn:hover {
-            background: rgba(99, 102, 241, 0.2);
-            border-color: var(--accent);
-        }
-
-        /* ═══════════════════════════════════════════
-           BUTTONS
-        ═══════════════════════════════════════════ */
-        .btn {
-            padding: 0.7rem 1.25rem;
-            border-radius: var(--radius-sm);
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
+        .copy-btn,
+        .qr-btn {
+            padding: 0.75rem 1.5rem;
+            background-color: var(--primary);
+            color: white;
             border: none;
-            font-size: 0.85rem;
-            font-family: inherit;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .copy-btn:hover,
+        .qr-btn:hover {
+            background-color: var(--primary-dark);
+        }
+
+        /* Receive section */
+        .receive-form {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid var(--border);
+            font-size: 1rem;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            font-size: 1rem;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 0.5rem;
         }
 
         .btn-primary {
-            background: var(--accent-gradient);
+            background-color: var(--primary);
             color: white;
-            box-shadow: 0 4px 16px var(--accent-glow);
         }
 
         .btn-primary:hover {
-            background: var(--accent-gradient-h);
-            box-shadow: 0 6px 24px var(--accent-glow);
-            transform: translateY(-1px);
+            background-color: var(--primary-dark);
         }
 
-        .btn-ghost {
-            background: var(--bg-glass);
-            color: var(--text-secondary);
+        .btn-outline {
+            background: transparent;
             border: 1px solid var(--border);
+            color: var(--text);
         }
 
-        .btn-ghost:hover {
-            background: var(--bg-glass-hover);
-            border-color: var(--border-hover);
-            color: var(--text-primary);
+        .btn-outline:hover {
+            border-color: var(--primary);
+            color: var(--primary);
         }
 
-        .btn-sm {
-            padding: 0.5rem 1rem;
-            font-size: 0.8rem;
+        .btn-icon {
+            margin-right: 0.5rem;
         }
 
         .btn-block {
-            display: flex;
+            display: block;
             width: 100%;
         }
 
-        /* ═══════════════════════════════════════════
-           RECEIVE — 6-DIGIT CODE INPUT
-        ═══════════════════════════════════════════ */
-        .receive-form {
-            max-width: 440px;
-            margin: 0 auto;
-            text-align: center;
+        /* Options */
+        .options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1.5rem;
         }
 
-        .code-input-group {
+        .expiry-select {
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid var(--border);
+            background-color: white;
+            color: var(--text);
+            font-size: 1rem;
+        }
+
+        /* Success message */
+        .success-message {
+            background-color: rgba(16, 185, 129, 0.1);
+            border: 1px solid var(--success);
+            color: var(--success);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-top: 2rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .success-icon {
+            margin-right: 0.75rem;
+            font-size: 1.25rem;
+        }
+
+        /* Share link */
+        .share-link {
+            display: flex;
+            margin-top: 1.5rem;
+        }
+
+        .link-input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border);
+            border-right: none;
+            border-radius: 0.5rem 0 0 0.5rem;
+            font-size: 1rem;
+            background-color: var(--secondary);
+        }
+
+        .loading-spinner {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            text-align: center;
+            position: relative;
+            border-radius: 10px;
+            /* Make edges rounder */
+        }
+
+        .close {
+            color: #aaa;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+        }
+
+        #qrCode {
             display: flex;
             justify-content: center;
-            gap: 0.5rem;
-            margin-bottom: 2rem;
+            margin-bottom: 1rem;
+            /* Add gap between QR code and message */
         }
 
-        .code-input-box {
-            width: 52px;
-            height: 64px;
-            border: 2px solid var(--border);
-            border-radius: var(--radius-md);
-            background: var(--bg-glass);
-            color: var(--text-primary);
+        .btn-secondary {
+            padding: 0.75rem 1.5rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 500;
+            margin-top: 1rem;
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        /* Hide the Scan QR Code button by default */
+        .scan-qr-btn {
+            display: none;
+        }
+
+        .footer {
+            margin-top: 2rem;
+            text-align: center;
+            color: var(--text-light);
+            font-size: 0.875rem;
+        }
+
+        /* Show the Scan QR Code button only on small screens */
+        @media (max-width: 640px) {
+            .scan-qr-btn {
+                display: block;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .choice-buttons {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+
+            #qrCode {
+                display: flex;
+                justify-content: center;
+                margin-bottom: 0.5rem;
+                /* Add gap between QR code and message */
+                width: 200px;
+                height: 200px;
+                margin-top: 33px;
+                margin-left: 30px;
+
+            }
+
+            .copy-btn,
+            .qr-btn {
+                padding: 0.60rem 1rem;
+                background-color: var(--primary);
+                color: white;
+                border: none;
+                border-radius: 0.5rem;
+                cursor: pointer;
+                font-weight: 400;
+            }
+
+            .choice-button {
+                padding: 1rem;
+            }
+
+            .upload-area {
+                padding: 2rem 1rem;
+            }
+
+            .upload-icon {
+                font-size: 2rem;
+            }
+
+            .upload-text {
+                font-size: 1rem;
+            }
+
+            .upload-subtext {
+                font-size: 0.75rem;
+            }
+
+            .file-item {
+                padding: 0.75rem;
+            }
+
+            .file-icon {
+                font-size: 1.25rem;
+            }
+
+            .file-name {
+                font-size: 0.875rem;
+            }
+
+            .file-size {
+                font-size: 0.75rem;
+            }
+
+            .form-input {
+                padding: 0.5rem 0.75rem;
+            }
+
+            .btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.875rem;
+            }
+
+            .modal-content {
+                padding: 10px;
+            }
+
+            .close {
+                font-size: 24px;
+            }
+        }
+
+        /* OTP-style code boxes */
+        .code-boxes {
+            display: flex;
+            justify-content: center;
+            gap: 0.625rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .code-box {
+            width: 3.25rem;
+            height: 3.75rem;
+            text-align: center;
             font-size: 1.5rem;
             font-weight: 700;
-            font-family: 'Inter', monospace;
-            text-align: center;
             text-transform: uppercase;
+            border: 2px solid var(--border);
+            border-radius: 0.625rem;
+            background: var(--secondary);
+            color: var(--text);
             outline: none;
-            caret-color: var(--accent);
-            transition: all 0.2s ease;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            caret-color: var(--primary);
         }
 
-        .code-input-box:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px var(--accent-glow);
-            background: rgba(99, 102, 241, 0.06);
+        .code-box:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
         }
 
-        .code-input-box.filled {
-            border-color: var(--accent-light);
-            background: rgba(99, 102, 241, 0.06);
+        .code-box.filled {
+            border-color: var(--primary);
+            background: white;
         }
 
-        .code-input-label {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            font-weight: 500;
-            margin-bottom: 1.25rem;
-        }
-
-        .receive-divider {
+        .or-divider {
             display: flex;
             align-items: center;
             gap: 1rem;
-            margin: 1.5rem 0;
-            color: var(--text-muted);
-            font-size: 0.8rem;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
+            margin: 1.25rem 0;
+            color: var(--text-light);
+            font-size: 0.875rem;
         }
 
-        .receive-divider::before,
-        .receive-divider::after {
+        .or-divider::before,
+        .or-divider::after {
             content: '';
             flex: 1;
             height: 1px;
             background: var(--border);
         }
 
-        /* ═══════════════════════════════════════════
-           SUCCESS MESSAGE
-        ═══════════════════════════════════════════ */
-        .success-message {
-            background: var(--success-bg);
-            border: 1px solid rgba(16, 185, 129, 0.25);
-            color: var(--success);
-            padding: 0.875rem 1.25rem;
-            border-radius: var(--radius-md);
-            margin-top: 1.5rem;
+        .url-section {
             display: none;
-            align-items: center;
-            gap: 0.625rem;
-            font-weight: 500;
-            font-size: 0.9rem;
-            animation: fadeInUp 0.3s ease-out;
         }
 
-        .success-message.visible {
-            display: flex;
+        .url-section.active {
+            display: block;
         }
 
-        /* ═══════════════════════════════════════════
-           LOADING SPINNER
-        ═══════════════════════════════════════════ */
-        .loading-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(10, 14, 26, 0.75);
-            backdrop-filter: blur(8px);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 100;
-        }
-
-        .loading-overlay.visible {
-            display: flex;
-        }
-
-        .loading-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
-            padding: 2rem 3rem;
-            text-align: center;
-            box-shadow: var(--shadow-lg);
-        }
-
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 3px solid var(--border);
-            border-top-color: var(--accent);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            margin: 0 auto 1rem;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .loading-text {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            font-weight: 500;
-        }
-
-        /* ═══════════════════════════════════════════
-           QR CODE MODAL
-        ═══════════════════════════════════════════ */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(10, 14, 26, 0.8);
-            backdrop-filter: blur(8px);
-            z-index: 200;
-            align-items: center;
-            justify-content: center;
-            padding: 1.5rem;
-        }
-
-        .modal-overlay.visible {
-            display: flex;
-        }
-
-        .modal-card {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-xl);
-            padding: 2rem;
-            max-width: 380px;
-            width: 100%;
-            text-align: center;
-            position: relative;
-            box-shadow: var(--shadow-lg);
-            animation: fadeInUp 0.3s ease-out;
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: var(--bg-glass);
-            border: 1px solid var(--border);
-            color: var(--text-muted);
+        .toggle-link {
+            color: var(--primary);
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.1rem;
-            transition: all 0.2s;
-        }
-
-        .modal-close:hover {
-            background: var(--bg-glass-hover);
-            color: var(--text-primary);
-        }
-
-        .modal-title {
-            font-size: 1.1rem;
-            font-weight: 700;
-            margin-bottom: 1.25rem;
-            color: var(--text-primary);
-        }
-
-        #qrCode {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 1.25rem;
-            padding: 1rem;
-            background: white;
-            border-radius: var(--radius-md);
-            width: fit-content;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .modal-hint {
-            font-size: 0.825rem;
-            color: var(--text-muted);
-            line-height: 1.6;
-        }
-
-        /* ═══════════════════════════════════════════
-           FOOTER
-        ═══════════════════════════════════════════ */
-        .footer {
-            margin-top: 2rem;
+            font-size: 0.9rem;
             text-align: center;
-            color: var(--text-muted);
-            font-size: 0.8rem;
+            margin-top: 1rem;
+            transition: color 0.2s;
         }
 
-        .footer a {
-            color: var(--accent-light);
-            text-decoration: none;
+        .toggle-link:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
         }
 
-        /* ═══════════════════════════════════════════
-           SCAN QR BUTTON (mobile only)
-        ═══════════════════════════════════════════ */
-        .scan-qr-btn {
-            display: none;
-        }
-
-        /* ═══════════════════════════════════════════
-           TOAST NOTIFICATION
-        ═══════════════════════════════════════════ */
-        .toast {
-            position: fixed;
-            bottom: 2rem;
-            left: 50%;
-            transform: translateX(-50%) translateY(100px);
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            color: var(--text-primary);
-            padding: 0.75rem 1.5rem;
-            border-radius: var(--radius-md);
-            font-size: 0.85rem;
-            font-weight: 500;
-            box-shadow: var(--shadow-md);
-            z-index: 300;
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            pointer-events: none;
-        }
-
-        .toast.visible {
-            transform: translateX(-50%) translateY(0);
-        }
-
-        .toast.success {
-            border-color: rgba(16, 185, 129, 0.3);
-        }
-
-        .toast.error {
-            border-color: rgba(239, 68, 68, 0.3);
-        }
-
-        /* ═══════════════════════════════════════════
-           RESPONSIVE
-        ═══════════════════════════════════════════ */
-        @media (max-width: 640px) {
-            body {
-                padding: 1rem;
-            }
-
-            .choice-buttons {
-                flex-direction: column;
-                gap: 0.75rem;
-            }
-
-            .choice-button {
-                flex-direction: row;
-                min-width: 100%;
-                padding: 1.25rem 1.5rem;
-                gap: 1rem;
-            }
-
-            .choice-icon {
-                width: 48px;
-                height: 48px;
-                font-size: 1.35rem;
-            }
-
-            .choice-section {
-                padding: 2rem 1.5rem;
-            }
-
-            .send-section,
-            .receive-section {
-                padding: 2rem 1.5rem;
-            }
-
-            .upload-area {
-                padding: 2rem 1.5rem;
-            }
-
-            .code-input-box {
-                width: 44px;
-                height: 56px;
+        @media (max-width: 360px) {
+            .code-box {
+                width: 2.5rem;
+                height: 3rem;
                 font-size: 1.25rem;
             }
 
-            .code-display-value {
-                font-size: 2rem;
-            }
-
-            .scan-qr-btn {
-                display: flex;
-            }
-
-            .section-title {
-                font-size: 1.375rem;
-            }
-
-            .file-actions {
-                width: 100%;
-                margin-top: 0.5rem;
-            }
-
-            .file-actions .btn {
-                flex: 1;
+            .code-boxes {
+                gap: 0.375rem;
             }
         }
 
-        @media (max-width: 380px) {
-            .code-input-box {
-                width: 38px;
-                height: 50px;
-                font-size: 1.1rem;
-            }
+        /* Toast notification */
+        .toast-container {
+            position: fixed;
+            top: 1.5rem;
+            right: 1.5rem;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
 
-            .code-input-group {
-                gap: 0.35rem;
-            }
+        .toast {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.875rem 1.25rem;
+            border-radius: 0.75rem;
+            color: white;
+            font-size: 0.95rem;
+            font-weight: 500;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+            animation: toastIn 0.35s cubic-bezier(0.21, 1.02, 0.73, 1) forwards;
+            max-width: 360px;
+            word-break: break-word;
+        }
 
-            .code-display-value {
-                font-size: 1.6rem;
-                letter-spacing: 0.2em;
+        .toast.toast-success {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+
+        .toast.toast-error {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+
+        .toast.toast-info {
+            background: linear-gradient(135deg, #4f46e5, #4338ca);
+        }
+
+        .toast.hiding {
+            animation: toastOut 0.3s ease-in forwards;
+        }
+
+        .toast-icon {
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        @keyframes toastIn {
+            from {
+                opacity: 0;
+                transform: translateX(100%) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0) scale(1);
+            }
+        }
+
+        @keyframes toastOut {
+            from {
+                opacity: 1;
+                transform: translateX(0) scale(1);
+            }
+            to {
+                opacity: 0;
+                transform: translateX(100%) scale(0.9);
             }
         }
     </style>
 </head>
 
 <body>
-    <!-- Toast Notification -->
-    <div class="toast" id="toast"></div>
-
-    <!-- Loading Overlay -->
-    <div class="loading-overlay" id="loadingOverlay">
-        <div class="loading-card">
-            <div class="spinner"></div>
-            <p class="loading-text">Uploading your file...</p>
-        </div>
-    </div>
-
-    <!-- QR Code Modal -->
-    <div class="modal-overlay" id="qrModal">
-        <div class="modal-card">
-            <button class="modal-close" id="qrModalClose" aria-label="Close QR modal">✕</button>
-            <h3 class="modal-title">Scan to Download</h3>
-            <div id="qrCode"></div>
-            <p class="modal-hint">Point your phone camera at this QR code to instantly download the file.</p>
-        </div>
-    </div>
-
+    <div class="toast-container" id="toastContainer"></div>
     <div class="container">
         <!-- Logo -->
         <div class="logo">
-            <div class="logo-icon">⚡</div>
-            <span class="logo-text">FileShare</span>
+            <span class="logo-icon">📁</span>
+            FileShare
         </div>
 
-        <!-- Main Content Card -->
-        <main class="main-content">
-
-            <!-- ═══ CHOICE SECTION ═══ -->
-            <section class="choice-section" id="choiceSection">
-                <h1 class="section-title">Send or Receive Files Instantly</h1>
-                <p class="section-subtitle">Share files across any device with a simple 6-digit code. No sign-up needed.</p>
+        <!-- Main content -->
+        <div class="main-content">
+            <div class="loading-spinner" id="loadingSpinner" style="display: none;">
+                <div class="spinner"></div>
+                <p>Uploading...</p>
+            </div>
+            <!-- Choice section -->
+            <div class="choice-section" id="choiceSection">
+                <h1 class="section-title">What would you like to do?</h1>
+                <p class="section-subtitle">Choose whether you want to send files or receive files that someone has
+                    shared with you.</p>
 
                 <div class="choice-buttons">
-                    <div class="choice-button" id="sendBtn" role="button" tabindex="0">
+                    <div class="choice-button" onclick="showSendSection()">
                         <div class="choice-icon">📤</div>
                         <div class="choice-label">Send Files</div>
                     </div>
-                    <div class="choice-button" id="receiveBtn" role="button" tabindex="0">
+                    <div class="choice-button" onclick="showReceiveSection()">
                         <div class="choice-icon">📥</div>
                         <div class="choice-label">Receive Files</div>
                     </div>
                 </div>
-            </section>
+            </div>
 
-            <!-- ═══ SEND SECTION ═══ -->
-            <section class="send-section" id="sendSection" aria-label="Send files">
-                <button class="back-button" id="sendBackBtn">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
-                    Back
-                </button>
+            <!-- Send section -->
+            <div class="send-section" id="sendSection">
+                <div class="back-button" onclick="showChoiceSection()">
+                    <span class="back-icon">←</span> Back
+                </div>
 
                 <h2 class="section-title">Send Files</h2>
-                <p class="section-subtitle">Upload your files and share the 6-digit code with the receiver.</p>
+                <p class="section-subtitle">Upload your files and share them securely with others.</p>
 
                 <div class="upload-area" id="uploadArea">
-                    <div class="upload-icon-wrap">☁️</div>
+                    <div class="upload-icon">📤</div>
                     <h3 class="upload-text">Drag & Drop Files Here</h3>
                     <p class="upload-subtext">or click to browse your files</p>
                 </div>
 
-                <!-- Code Display (appears after upload) -->
-                <div class="code-display-section" id="codeDisplaySection">
-                    <div class="code-display-label">Your Share Code</div>
-                    <div class="code-display-value" id="codeDisplayValue">------</div>
-                    <div class="code-display-hint">Share this code with the receiver — they enter it to download your file</div>
-                    <button class="code-copy-btn" id="codeCopyBtn">📋 Copy Code</button>
+                <div class="file-list" id="fileList">
+                    <!-- File items will be added here -->
+
+
                 </div>
 
-                <!-- File List -->
-                <div class="file-list" id="fileList"></div>
 
-                <!-- Success Message -->
-                <div class="success-message" id="successMessage">
-                    <span>✅</span>
-                    File uploaded successfully! Share the code above.
+                <div class="success-message" id="successMessage" style="display: none;">
+                    <span class="success-icon">✅</span>
+                    Files uploaded successfully!
                 </div>
-            </section>
 
-            <!-- ═══ RECEIVE SECTION ═══ -->
-            <section class="receive-section" id="receiveSection" aria-label="Receive files">
-                <button class="back-button" id="receiveBackBtn">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
-                    Back
-                </button>
+                <div class="share-link" id="shareLink" style="display: none;">
+                    <p>Copy the link and share it with the receiver to download the file</p>
+                </div>
+            </div>
+
+            <!-- QR Code Modal -->
+            <div id="qrCodeModal" class="modal">
+                <div class="modal-content">
+                    <span class="close" onclick="closeQrCodeModal()">&times;</span>
+                    <div id="qrCode" style="display: flex; justify-content: center;"></div>
+                    <p>Scan the QR code to download the file</p>
+                </div>
+            </div>
+
+            <!-- Receive section -->
+            <div class="receive-section" id="receiveSection">
+                <div class="back-button" onclick="showChoiceSection()">
+                    <span class="back-icon">←</span> Back
+                </div>
 
                 <h2 class="section-title">Receive Files</h2>
-                <p class="section-subtitle">Enter the 6-digit code shared with you to download the file.</p>
+                <p class="section-subtitle">Enter the 6-digit code shared with you to download the file instantly.</p>
 
                 <div class="receive-form">
-                    <p class="code-input-label">Enter your 6-digit code</p>
-                    <div class="code-input-group" id="codeInputGroup">
-                        <input type="text" class="code-input-box" maxlength="1" data-index="0" autocomplete="off" aria-label="Code digit 1" id="codeBox0">
-                        <input type="text" class="code-input-box" maxlength="1" data-index="1" autocomplete="off" aria-label="Code digit 2" id="codeBox1">
-                        <input type="text" class="code-input-box" maxlength="1" data-index="2" autocomplete="off" aria-label="Code digit 3" id="codeBox2">
-                        <input type="text" class="code-input-box" maxlength="1" data-index="3" autocomplete="off" aria-label="Code digit 4" id="codeBox3">
-                        <input type="text" class="code-input-box" maxlength="1" data-index="4" autocomplete="off" aria-label="Code digit 5" id="codeBox4">
-                        <input type="text" class="code-input-box" maxlength="1" data-index="5" autocomplete="off" aria-label="Code digit 6" id="codeBox5">
+                    <div class="form-group">
+                        <label class="form-label">File Code</label>
+                        <div class="code-boxes" id="codeBoxes">
+                            <input type="text" class="code-box" maxlength="1" data-index="0" autocomplete="off" spellcheck="false" inputmode="text">
+                            <input type="text" class="code-box" maxlength="1" data-index="1" autocomplete="off" spellcheck="false" inputmode="text">
+                            <input type="text" class="code-box" maxlength="1" data-index="2" autocomplete="off" spellcheck="false" inputmode="text">
+                            <input type="text" class="code-box" maxlength="1" data-index="3" autocomplete="off" spellcheck="false" inputmode="text">
+                            <input type="text" class="code-box" maxlength="1" data-index="4" autocomplete="off" spellcheck="false" inputmode="text">
+                            <input type="text" class="code-box" maxlength="1" data-index="5" autocomplete="off" spellcheck="false" inputmode="text">
+                        </div>
                     </div>
 
                     <button class="btn btn-primary btn-block" id="downloadBtn">
-                        📥 Download File
+                        <span class="btn-icon">📥</span> Download File
                     </button>
 
-                    <div class="receive-divider">or</div>
+                    <div class="toggle-link" id="toggleUrl">Have a download link instead?</div>
 
-                    <button class="btn btn-ghost btn-block scan-qr-btn" id="scanQrBtn">
-                        📷 Scan QR Code
+                    <div class="url-section" id="urlSection">
+                        <div class="or-divider">OR</div>
+                        <div class="form-group">
+                            <label for="fileUrl" class="form-label">Download URL</label>
+                            <input type="text" id="fileUrl" class="form-input" placeholder="Paste your download link here">
+                        </div>
+                        <button class="btn btn-primary btn-block" id="downloadUrlBtn">
+                            <span class="btn-icon">🔗</span> Download from URL
+                        </button>
+                    </div>
+
+                    <button class="btn btn-secondary btn-block scan-qr-btn" onclick="scanQrCode()" style="margin-top: 1rem;">
+                        <span class="btn-icon">📷</span> Scan QR Code
                     </button>
                 </div>
-            </section>
+            </div>
 
-        </main>
+        </div>
 
         <footer class="footer">
-            <p>&copy; 2025 <a href="#">Ashley Almeida</a>. Instant, secure file sharing.</p>
+            <p>&copy; 2025 Ashley Almeida. Simple, secure file sharing.</p>
         </footer>
     </div>
 
     <script>
-        // ═══════════════════════════════════════════
-        //  DOM REFERENCES
-        // ═══════════════════════════════════════════
-        const $ = (sel) => document.querySelector(sel);
-        const $$ = (sel) => document.querySelectorAll(sel);
+        document.addEventListener('DOMContentLoaded', function () {
+            const choiceSection = document.getElementById('choiceSection');
+            const sendSection = document.getElementById('sendSection');
+            const receiveSection = document.getElementById('receiveSection');
+            const successMessage = document.getElementById('successMessage');
+            const shareLink = document.getElementById('shareLink');
+            const uploadArea = document.getElementById('uploadArea');
+            const fileList = document.getElementById('fileList');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            const qrCodeModal = document.getElementById('qrCodeModal');
+            const qrCodeElement = document.getElementById('qrCode');
+            const qrCodeReaderModal = document.getElementById('qrCodeReaderModal');
+            let filesToUpload = [];
 
-        const choiceSection = $('#choiceSection');
-        const sendSection = $('#sendSection');
-        const receiveSection = $('#receiveSection');
-        const uploadArea = $('#uploadArea');
-        const fileList = $('#fileList');
-        const loadingOverlay = $('#loadingOverlay');
-        const successMessage = $('#successMessage');
-        const codeDisplaySection = $('#codeDisplaySection');
-        const codeDisplayValue = $('#codeDisplayValue');
-        const qrModal = $('#qrModal');
-        const qrCodeEl = $('#qrCode');
-        const toastEl = $('#toast');
-        const codeBoxes = $$('.code-input-box');
-
-        let lastUploadedCode = '';
-
-        // ═══════════════════════════════════════════
-        //  TOAST NOTIFICATIONS
-        // ═══════════════════════════════════════════
-        function showToast(message, type = '') {
-            toastEl.textContent = message;
-            toastEl.className = 'toast' + (type ? ' ' + type : '');
-            // Force reflow
-            void toastEl.offsetWidth;
-            toastEl.classList.add('visible');
-            setTimeout(() => {
-                toastEl.classList.remove('visible');
-            }, 2500);
-        }
-
-        // ═══════════════════════════════════════════
-        //  SECTION NAVIGATION
-        // ═══════════════════════════════════════════
-        function showSection(section) {
-            choiceSection.style.display = 'none';
-            sendSection.classList.remove('active');
-            receiveSection.classList.remove('active');
-
-            if (section === 'choice') {
-                choiceSection.style.display = '';
-            } else if (section === 'send') {
-                sendSection.classList.add('active');
-            } else if (section === 'receive') {
-                receiveSection.classList.add('active');
-                // Focus first code box
-                setTimeout(() => codeBoxes[0]?.focus(), 100);
+            function showChoiceSection() {
+                choiceSection.style.display = 'block';
+                sendSection.style.display = 'none';
+                receiveSection.style.display = 'none';
             }
-        }
 
-        $('#sendBtn').addEventListener('click', () => showSection('send'));
-        $('#receiveBtn').addEventListener('click', () => showSection('receive'));
-        $('#sendBackBtn').addEventListener('click', () => showSection('choice'));
-        $('#receiveBackBtn').addEventListener('click', () => showSection('choice'));
+            function showSendSection() {
+                choiceSection.style.display = 'none';
+                sendSection.style.display = 'block';
+                receiveSection.style.display = 'none';
+            }
 
-        // Keyboard support for choice buttons
-        $$('.choice-button').forEach(btn => {
-            btn.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    btn.click();
-                }
-            });
-        });
+            function showReceiveSection() {
+                choiceSection.style.display = 'none';
+                sendSection.style.display = 'none';
+                receiveSection.style.display = 'block';
+            }
 
-        // ═══════════════════════════════════════════
-        //  LOADING OVERLAY
-        // ═══════════════════════════════════════════
-        function showLoading() { loadingOverlay.classList.add('visible'); }
-        function hideLoading() { loadingOverlay.classList.remove('visible'); }
+            function createFileItem(fileName, fileUrl, code) {
+                const fileItem = document.createElement('div');
+                fileItem.className = 'file-item';
+                fileItem.innerHTML = `
+                    <div class="file-icon">📄</div>
+                    <div class="file-info">
+                        <div class="file-name">${fileName}</div>
+                        <div class="file-size" style="font-weight:700; font-size:1.1rem; letter-spacing:0.15em; color:var(--primary); margin-top:0.25rem;">Code: ${code}</div>
+                    </div>
+                    <div class="file-actions">
+                        <button class="copy-btn" onclick="copyToClipboard('${code}')">Copy Code</button>
+                        <button class="copy-btn" onclick="copyToClipboard('${fileUrl}')">Copy URL</button>
+                        <button class="qr-btn" onclick="generateQrCode('${fileUrl}')">QR Code</button>
+                    </div>
+                `;
+                return fileItem;
+            }
 
-        // ═══════════════════════════════════════════
-        //  QR CODE MODAL
-        // ═══════════════════════════════════════════
-        function showQrCode(url) {
-            qrCodeEl.innerHTML = '';
-            new QRCode(qrCodeEl, {
-                text: url,
-                width: 200,
-                height: 200,
-                colorDark: '#000000',
-                colorLight: '#ffffff',
-                correctLevel: QRCode.CorrectLevel.M
-            });
-            qrModal.classList.add('visible');
-        }
-
-        function closeQrModal() {
-            qrModal.classList.remove('visible');
-        }
-
-        $('#qrModalClose').addEventListener('click', closeQrModal);
-        qrModal.addEventListener('click', (e) => {
-            if (e.target === qrModal) closeQrModal();
-        });
-
-        // ═══════════════════════════════════════════
-        //  CLIPBOARD COPY
-        // ═══════════════════════════════════════════
-        async function copyText(text) {
-            try {
-                await navigator.clipboard.writeText(text);
-                showToast('Copied to clipboard!', 'success');
-            } catch {
-                // Fallback
-                const ta = document.createElement('textarea');
-                ta.value = text;
-                ta.style.position = 'fixed';
-                ta.style.left = '-9999px';
-                document.body.appendChild(ta);
-                ta.select();
+            function copyToClipboard(text) {
+                const tempInput = document.createElement('input');
+                tempInput.value = text;
+                document.body.appendChild(tempInput);
+                tempInput.select();
                 document.execCommand('copy');
-                document.body.removeChild(ta);
+                document.body.removeChild(tempInput);
                 showToast('Copied to clipboard!', 'success');
             }
-        }
 
-        // ═══════════════════════════════════════════
-        //  FILE UPLOAD HANDLER
-        // ═══════════════════════════════════════════
-        async function uploadFile(file) {
-            const formData = new FormData();
-            formData.append('file', file);
+            function generateQrCode(url) {
+                qrCodeElement.innerHTML = '';
+                new QRCode(qrCodeElement, url);
+                qrCodeModal.style.display = 'block';
+            }
 
-            showLoading();
+            function closeQrCodeModal() {
+                qrCodeModal.style.display = 'none';
+            }
 
-            try {
-                const response = await fetch('/upload', {
-                    method: 'POST',
-                    body: formData,
+            function closeQrCodeReaderModal() {
+                qrCodeReaderModal.style.display = 'none';
+                Html5Qrcode.getCameras().then(cameras => {
+                    if (cameras && cameras.length) {
+                        const html5QrCode = new Html5Qrcode("reader");
+                        html5QrCode.stop().catch(err => {
+                            console.error("Failed to stop QR code scanner.", err);
+                        });
+                    }
+                }).catch(err => {
+                    console.error("Failed to get cameras.", err);
+                });
+            }
+
+            function showLoadingSpinner() {
+                loadingSpinner.style.display = 'flex';
+            }
+
+            function hideLoadingSpinner() {
+                loadingSpinner.style.display = 'none';
+            }
+
+            function scanQrCode() {
+                const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+                if (/android/i.test(userAgent)) {
+                    // Attempt 1: Open Google Lens app directly via Google App
+                    window.location.href = 'googleapp://googlelens';
+
+                    // Attempt 2: Intent-based fallback for better device compatibility
+                    setTimeout(() => {
+                        window.location.href = 'intent://com.google.ar.lens/#Intent;scheme=android-app;end';
+                    }, 500);
+
+                    // Attempt 3: Open Lens via Google Search app (widely supported method)
+                    setTimeout(() => {
+                        window.location.href = 'https://lens.google.com/';
+                    }, 1000);
+                }
+                else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+                    // iOS - Open Google Lens in browser
+                    window.location.href = 'https://lens.google.com/';
+                }
+                else {
+                    // Other Devices
+                    window.location.href = 'https://lens.google.com/';
+                }
+            }
+
+
+
+
+            // Drag & Drop functionality
+            uploadArea.addEventListener('dragover', (event) => {
+                event.preventDefault();
+                uploadArea.style.borderColor = "#4338ca";
+            });
+
+            uploadArea.addEventListener('dragleave', () => {
+                uploadArea.style.borderColor = "#e5e7eb";
+            });
+
+            uploadArea.addEventListener('drop', async (event) => {
+                event.preventDefault();
+                uploadArea.style.borderColor = "#e5e7eb";
+
+                const files = event.dataTransfer.files;
+                if (files.length === 0) return;
+
+                showLoadingSpinner();
+
+                for (const file of files) {
+                    filesToUpload.push(file);
+
+                    const formData = new FormData();
+                    formData.append('file', file);
+
+                    try {
+                        const response = await fetch('/upload', {
+                            method: 'POST',
+                            body: formData,
+                        });
+
+                        const result = await response.json();
+                        if (result.link) {
+                            fileList.appendChild(createFileItem(file.name, window.location.origin + result.link, result.code));
+                            successMessage.style.display = 'flex';
+                            shareLink.style.display = 'flex';
+                        } else {
+                            showToast('Error uploading file', 'error');
+                        }
+                    } catch (error) {
+                        showToast('Upload failed. Please try again.', 'error');
+                    }
+                }
+
+                hideLoadingSpinner();
+            });
+
+            // Click-to-Upload functionality
+            uploadArea.addEventListener('click', () => {
+                const fileInput = document.createElement('input');
+                fileInput.type = 'file';
+                fileInput.style.display = 'none';
+                document.body.appendChild(fileInput);
+
+                fileInput.addEventListener('change', async (event) => {
+                    const files = event.target.files;
+                    if (files.length === 0) return;
+
+                    showLoadingSpinner();
+
+                    for (const file of files) {
+                        filesToUpload.push(file);
+
+                        const formData = new FormData();
+                        formData.append('file', file);
+
+                        try {
+                            const response = await fetch('/upload', {
+                                method: 'POST',
+                                body: formData,
+                            });
+
+                            const result = await response.json();
+                            if (result.link) {
+                                fileList.appendChild(createFileItem(file.name, window.location.origin + result.link, result.code));
+                                successMessage.style.display = 'flex';
+                                shareLink.style.display = 'flex';
+                            } else {
+                                showToast('Error uploading file', 'error');
+                            }
+                        } catch (error) {
+                            showToast('Upload failed. Please try again.', 'error');
+                        }
+                    }
+
+                    hideLoadingSpinner();
+                });
+                fileInput.click();
+            });
+
+            // Expose functions globally for inline onclick attributes
+            window.showChoiceSection = showChoiceSection;
+            window.showSendSection = showSendSection;
+            window.showReceiveSection = showReceiveSection;
+            window.copyToClipboard = copyToClipboard;
+            window.generateQrCode = generateQrCode;
+            window.closeQrCodeModal = closeQrCodeModal;
+            window.scanQrCode = scanQrCode;
+            window.closeQrCodeReaderModal = closeQrCodeReaderModal;
+        });
+
+        // OTP-style code box logic
+        (function () {
+            const boxes = document.querySelectorAll('.code-box');
+
+            boxes.forEach((box, i) => {
+                box.addEventListener('input', (e) => {
+                    const val = e.target.value;
+                    if (val.length >= 1) {
+                        e.target.value = val.charAt(0).toUpperCase();
+                        e.target.classList.add('filled');
+                        if (i < boxes.length - 1) boxes[i + 1].focus();
+                    } else {
+                        e.target.classList.remove('filled');
+                    }
                 });
 
-                const result = await response.json();
+                box.addEventListener('keydown', (e) => {
+                    if (e.key === 'Backspace' && !box.value && i > 0) {
+                        boxes[i - 1].focus();
+                        boxes[i - 1].value = '';
+                        boxes[i - 1].classList.remove('filled');
+                    }
+                    if (e.key === 'Enter') {
+                        document.getElementById('downloadBtn').click();
+                    }
+                });
 
-                if (result.code) {
-                    lastUploadedCode = result.code;
-                    const shortUrl = window.location.origin + '/c/' + result.code;
+                // Handle paste — fill all 6 boxes from clipboard
+                box.addEventListener('paste', (e) => {
+                    e.preventDefault();
+                    const pasted = (e.clipboardData || window.clipboardData).getData('text').trim().toUpperCase();
+                    for (let j = 0; j < Math.min(pasted.length, boxes.length); j++) {
+                        boxes[j].value = pasted.charAt(j);
+                        boxes[j].classList.add('filled');
+                    }
+                    const focusIdx = Math.min(pasted.length, boxes.length - 1);
+                    boxes[focusIdx].focus();
+                });
 
-                    // Show prominent code display
-                    codeDisplayValue.textContent = result.code;
-                    codeDisplaySection.classList.add('active');
-
-                    // Add file item
-                    const fileItem = document.createElement('div');
-                    fileItem.className = 'file-item';
-                    fileItem.innerHTML = `
-                        <div class="file-icon-wrap">📄</div>
-                        <div class="file-info">
-                            <div class="file-name">${escapeHtml(file.name)}</div>
-                            <div class="file-code-display">Code: ${result.code}</div>
-                        </div>
-                        <div class="file-actions">
-                            <button class="btn btn-ghost btn-sm" onclick="copyText('${result.code}')">📋 Code</button>
-                            <button class="btn btn-ghost btn-sm" onclick="copyText('${shortUrl}')">🔗 URL</button>
-                            <button class="btn btn-ghost btn-sm" onclick="showQrCode('${shortUrl}')">📱 QR</button>
-                        </div>
-                    `;
-                    fileList.appendChild(fileItem);
-
-                    // Show success
-                    successMessage.classList.add('visible');
-                } else {
-                    showToast('Error uploading file', 'error');
-                }
-            } catch (error) {
-                showToast('Upload failed. Please try again.', 'error');
-            }
-
-            hideLoading();
-        }
-
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
-
-        // ═══════════════════════════════════════════
-        //  DRAG & DROP
-        // ═══════════════════════════════════════════
-        uploadArea.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            uploadArea.classList.add('dragover');
-        });
-
-        uploadArea.addEventListener('dragleave', () => {
-            uploadArea.classList.remove('dragover');
-        });
-
-        uploadArea.addEventListener('drop', async (e) => {
-            e.preventDefault();
-            uploadArea.classList.remove('dragover');
-            const files = e.dataTransfer.files;
-            for (const file of files) {
-                await uploadFile(file);
-            }
-        });
-
-        // Click to upload
-        uploadArea.addEventListener('click', () => {
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.multiple = true;
-            input.style.display = 'none';
-            document.body.appendChild(input);
-
-            input.addEventListener('change', async (e) => {
-                for (const file of e.target.files) {
-                    await uploadFile(file);
-                }
-                document.body.removeChild(input);
-            });
-            input.click();
-        });
-
-        // Copy code button
-        $('#codeCopyBtn').addEventListener('click', () => {
-            if (lastUploadedCode) {
-                copyText(lastUploadedCode);
-            }
-        });
-
-        // ═══════════════════════════════════════════
-        //  6-DIGIT CODE INPUT (OTP-style)
-        // ═══════════════════════════════════════════
-        codeBoxes.forEach((box, index) => {
-            box.addEventListener('input', (e) => {
-                const val = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
-                e.target.value = val;
-
-                if (val && index < codeBoxes.length - 1) {
-                    codeBoxes[index + 1].focus();
-                }
-
-                // Update visual state
-                box.classList.toggle('filled', val.length > 0);
-
-                // Auto-submit when all filled
-                const fullCode = getCodeValue();
-                if (fullCode.length === 6) {
-                    downloadByCode(fullCode);
-                }
+                // Focus styling
+                box.addEventListener('focus', () => box.select());
             });
 
-            box.addEventListener('keydown', (e) => {
-                if (e.key === 'Backspace' && !e.target.value && index > 0) {
-                    codeBoxes[index - 1].focus();
-                    codeBoxes[index - 1].value = '';
-                    codeBoxes[index - 1].classList.remove('filled');
-                }
-            });
+            // Get the full code from all boxes
+            window.getCodeFromBoxes = function () {
+                return Array.from(boxes).map(b => b.value).join('').toUpperCase();
+            };
+        })();
 
-            // Handle paste
-            box.addEventListener('paste', (e) => {
-                e.preventDefault();
-                const pasted = (e.clipboardData.getData('text') || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
-                for (let i = 0; i < Math.min(pasted.length, 6); i++) {
-                    codeBoxes[i].value = pasted[i];
-                    codeBoxes[i].classList.add('filled');
-                }
-                const focusIdx = Math.min(pasted.length, 5);
-                codeBoxes[focusIdx].focus();
-
-                if (pasted.length >= 6) {
-                    downloadByCode(pasted.substring(0, 6));
-                }
-            });
+        // Download by code
+        document.getElementById('downloadBtn').addEventListener('click', () => {
+            const code = getCodeFromBoxes();
+            if (code.length !== 6) return showToast('Please enter all 6 characters.', 'error');
+            window.location.href = `/c/${code}`;
         });
 
-        function getCodeValue() {
-            return Array.from(codeBoxes).map(b => b.value).join('');
+        // Toggle URL section
+        document.getElementById('toggleUrl').addEventListener('click', () => {
+            const section = document.getElementById('urlSection');
+            const link = document.getElementById('toggleUrl');
+            section.classList.toggle('active');
+            link.textContent = section.classList.contains('active') ? 'Hide URL input' : 'Have a download link instead?';
+        });
+
+        // Download by URL
+        document.getElementById('downloadUrlBtn').addEventListener('click', () => {
+            const url = document.getElementById('fileUrl').value.trim();
+            if (!url) return showToast('Please enter a valid URL.', 'error');
+            window.location.href = url;
+        });
+
+        // Toast notification system
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            const icons = { success: '✅', error: '❌', info: 'ℹ️' };
+            toast.className = `toast toast-${type}`;
+            toast.innerHTML = `<span class="toast-icon">${icons[type] || icons.info}</span><span>${message}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.classList.add('hiding');
+                toast.addEventListener('animationend', () => toast.remove());
+            }, 3000);
         }
-
-        // ═══════════════════════════════════════════
-        //  DOWNLOAD BY CODE
-        // ═══════════════════════════════════════════
-        function downloadByCode(code) {
-            if (!code || code.length !== 6) {
-                showToast('Please enter a valid 6-digit code', 'error');
-                return;
-            }
-            window.location.href = '/c/' + code.toUpperCase();
-        }
-
-        $('#downloadBtn').addEventListener('click', () => {
-            downloadByCode(getCodeValue());
-        });
-
-        // ═══════════════════════════════════════════
-        //  SCAN QR (Mobile)
-        // ═══════════════════════════════════════════
-        $('#scanQrBtn').addEventListener('click', () => {
-            const ua = navigator.userAgent || navigator.vendor || window.opera;
-            if (/android/i.test(ua)) {
-                window.location.href = 'googleapp://googlelens';
-                setTimeout(() => {
-                    window.location.href = 'https://lens.google.com/';
-                }, 800);
-            } else if (/iPad|iPhone|iPod/.test(ua)) {
-                window.location.href = 'https://lens.google.com/';
-            } else {
-                window.location.href = 'https://lens.google.com/';
-            }
-        });
 
     </script>
 </body>

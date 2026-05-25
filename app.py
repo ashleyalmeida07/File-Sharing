@@ -1,7 +1,7 @@
-from flask import Flask, request, jsonify, send_from_directory, Response, redirect
+from flask import Flask, request, jsonify, send_from_directory
 import os
-import string
 import random
+import string
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
@@ -11,18 +11,15 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 
-# In-memory code registry: maps 6-char code -> filename
-code_to_file = {}
-file_to_code = {}
+# In-memory mapping of 6-digit codes to filenames
+code_map = {}
 
 
-def generate_code(length=6):
-    """Generate a random alphanumeric code (uppercase + digits, no ambiguous chars)."""
-    # Exclude ambiguous characters: 0/O, 1/I/L
-    chars = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789'
+def generate_code():
+    """Generate a unique 6-digit uppercase alphanumeric code."""
     while True:
-        code = ''.join(random.choices(chars, k=length))
-        if code not in code_to_file:
+        code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+        if code not in code_map:
             return code
 
 
@@ -30,6 +27,12 @@ def generate_code(length=6):
 @app.route('/')
 def index():
     return send_from_directory('', 'index.html')
+
+
+# Serve Google Search Console verification file
+@app.route('/google17b8c44586d12fd1.html')
+def google_verify():
+    return send_from_directory('', 'google17b8c44586d12fd1.html')
 
 
 # Upload endpoint
@@ -46,10 +49,9 @@ def upload_file():
     file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
     file.save(file_path)
 
-    # Generate a 6-digit share code
+    # Generate a 6-digit code for easy sharing
     code = generate_code()
-    code_to_file[code] = filename
-    file_to_code[filename] = code
+    code_map[code] = filename
 
     return jsonify({
         "message": "File uploaded successfully",
@@ -58,59 +60,27 @@ def upload_file():
     })
 
 
-# Download by code endpoint (short URL)
+# Download via 6-digit code
 @app.route('/c/<code>', methods=['GET'])
 def download_by_code(code):
-    code_upper = code.upper()
-    filename = code_to_file.get(code_upper)
-    if not filename:
+    code = code.upper()
+    if code not in code_map:
         return jsonify({"error": "Invalid or expired code"}), 404
+
+    filename = code_map[code]
     if not os.path.exists(os.path.join(app.config['UPLOAD_FOLDER'], filename)):
         return jsonify({"error": "File not found"}), 404
+
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename, as_attachment=True)
 
 
-# Download endpoint (original, keep for backward compatibility)
+# Download endpoint (legacy - keeps old links working)
 @app.route('/download/<filename>', methods=['GET'])
 def download_file(filename):
     if not os.path.exists(os.path.join(app.config['UPLOAD_FOLDER'], filename)):
         return jsonify({"error": "File not found"}), 404
+
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename, as_attachment=True)
-
-
-# Lookup code for a filename (used by frontend)
-@app.route('/lookup/<filename>', methods=['GET'])
-def lookup_code(filename):
-    code = file_to_code.get(filename)
-    if not code:
-        return jsonify({"error": "No code found"}), 404
-    return jsonify({"code": code})
-
-
-# SEO: robots.txt
-@app.route('/robots.txt')
-def robots():
-    content = """User-agent: *
-Allow: /
-Sitemap: https://filesharing-ob0e.onrender.com/sitemap.xml
-"""
-    return Response(content, mimetype='text/plain')
-
-
-# SEO: sitemap.xml
-@app.route('/sitemap.xml')
-def sitemap():
-    content = """<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://filesharing-ob0e.onrender.com/</loc>
-    <lastmod>2025-05-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-  </url>
-</urlset>
-"""
-    return Response(content, mimetype='application/xml')
 
 
 if __name__ == '__main__':
