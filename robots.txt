@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://filesharing-ob0e.onrender.com/sitemap.xml

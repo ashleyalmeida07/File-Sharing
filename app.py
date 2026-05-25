@@ -35,6 +35,17 @@ def google_verify():
     return send_from_directory('', 'google17b8c44586d12fd1.html')
 
 
+# SEO files
+@app.route('/sitemap.xml')
+def sitemap():
+    return send_from_directory('', 'sitemap.xml', mimetype='application/xml')
+
+
+@app.route('/robots.txt')
+def robots():
+    return send_from_directory('', 'robots.txt', mimetype='text/plain')
+
+
 # Upload endpoint
 @app.route('/upload', methods=['POST'])
 def upload_file():
