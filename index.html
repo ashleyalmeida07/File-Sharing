@@ -1,0 +1,1364 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SEO Meta Tags -->
+    <title>FileShare — Instant File Sharing with 6-Digit Codes | Fast & Secure</title>
+    <meta name="description" content="Share files instantly with a simple 6-digit code. No sign-up required. Transfer files between PC and phone in seconds using QR codes or short codes.">
+    <meta name="keywords" content="file sharing, file transfer, QR code sharing, 6-digit code, send files, receive files, fast file sharing, secure file transfer">
+    <meta name="author" content="Ashley Almeida">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://filesharing-ob0e.onrender.com/">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="FileShare — Instant File Sharing with 6-Digit Codes">
+    <meta property="og:description" content="Share files instantly with a simple 6-digit code. No sign-up required. Transfer between PC and phone in seconds.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://filesharing-ob0e.onrender.com/">
+    <meta property="og:site_name" content="FileShare">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="FileShare — Instant File Sharing with 6-Digit Codes">
+    <meta name="twitter:description" content="Share files instantly with a simple 6-digit code. No sign-up. Fast PC ↔ Phone transfers.">
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "FileShare",
+        "url": "https://filesharing-ob0e.onrender.com/",
+        "description": "Instant file sharing platform with 6-digit codes and QR code support for fast cross-device transfers.",
+        "applicationCategory": "UtilityApplication",
+        "operatingSystem": "Any",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "author": {
+            "@type": "Person",
+            "name": "Ashley Almeida"
+        }
+    }
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- QR Code Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+    <style>
+        /* ═══════════════════════════════════════════
+           RESET & DESIGN TOKENS
+        ═══════════════════════════════════════════ */
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0e1a;
+            --bg-secondary: #111827;
+            --bg-card: rgba(17, 24, 39, 0.7);
+            --bg-glass: rgba(255, 255, 255, 0.04);
+            --bg-glass-hover: rgba(255, 255, 255, 0.08);
+
+            --accent: #6366f1;
+            --accent-light: #818cf8;
+            --accent-glow: rgba(99, 102, 241, 0.3);
+            --accent-gradient: linear-gradient(135deg, #6366f1, #8b5cf6, #a78bfa);
+            --accent-gradient-h: linear-gradient(135deg, #818cf8, #a78bfa, #c4b5fd);
+
+            --success: #10b981;
+            --success-bg: rgba(16, 185, 129, 0.12);
+            --danger: #ef4444;
+
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+
+            --border: rgba(255, 255, 255, 0.08);
+            --border-hover: rgba(255, 255, 255, 0.15);
+            --border-accent: rgba(99, 102, 241, 0.4);
+
+            --radius-sm: 0.5rem;
+            --radius-md: 0.75rem;
+            --radius-lg: 1rem;
+            --radius-xl: 1.5rem;
+
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 16px 64px rgba(0, 0, 0, 0.5);
+            --shadow-glow: 0 0 40px var(--accent-glow);
+        }
+
+        /* ═══════════════════════════════════════════
+           BASE STYLES
+        ═══════════════════════════════════════════ */
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            overflow-x: hidden;
+        }
+
+        /* Animated gradient background */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 80% 60% at 20% 10%, rgba(99, 102, 241, 0.12) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 50% at 80% 90%, rgba(139, 92, 246, 0.10) 0%, transparent 60%),
+                radial-gradient(ellipse 50% 40% at 50% 50%, rgba(167, 139, 250, 0.05) 0%, transparent 60%);
+            pointer-events: none;
+            z-index: 0;
+            animation: bgPulse 8s ease-in-out infinite alternate;
+        }
+
+        @keyframes bgPulse {
+            0% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+
+        /* ═══════════════════════════════════════════
+           CONTAINER & LAYOUT
+        ═══════════════════════════════════════════ */
+        .container {
+            width: 100%;
+            max-width: 720px;
+            position: relative;
+            z-index: 1;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(24px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ═══════════════════════════════════════════
+           LOGO
+        ═══════════════════════════════════════════ */
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.625rem;
+            font-weight: 800;
+            font-size: 1.75rem;
+            margin-bottom: 2rem;
+            letter-spacing: -0.02em;
+        }
+
+        .logo-icon {
+            width: 42px;
+            height: 42px;
+            background: var(--accent-gradient);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            box-shadow: var(--shadow-glow);
+        }
+
+        .logo-text {
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* ═══════════════════════════════════════════
+           MAIN CARD (Glassmorphism)
+        ═══════════════════════════════════════════ */
+        .main-content {
+            background: var(--bg-card);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            transition: border-color 0.3s ease;
+        }
+
+        .main-content:hover {
+            border-color: var(--border-hover);
+        }
+
+        /* ═══════════════════════════════════════════
+           SECTIONS (Choice / Send / Receive)
+        ═══════════════════════════════════════════ */
+        .choice-section {
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .section-title {
+            font-size: 1.625rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.02em;
+            color: var(--text-primary);
+        }
+
+        .section-subtitle {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 2.5rem;
+            max-width: 480px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.7;
+        }
+
+        /* Choice Buttons */
+        .choice-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1.25rem;
+        }
+
+        .choice-button {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 2rem 2.5rem;
+            border-radius: var(--radius-lg);
+            background: var(--bg-glass);
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            min-width: 180px;
+        }
+
+        .choice-button:hover {
+            background: var(--bg-glass-hover);
+            border-color: var(--border-accent);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .choice-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            background: var(--accent-gradient);
+            box-shadow: 0 4px 16px var(--accent-glow);
+        }
+
+        .choice-label {
+            font-weight: 600;
+            font-size: 1.05rem;
+            color: var(--text-primary);
+        }
+
+        /* ═══════════════════════════════════════════
+           SEND & RECEIVE SECTIONS
+        ═══════════════════════════════════════════ */
+        .send-section,
+        .receive-section {
+            display: none;
+            padding: 2.5rem 2rem;
+            animation: fadeInUp 0.4s ease-out;
+        }
+
+        .send-section.active,
+        .receive-section.active {
+            display: block;
+        }
+
+        /* Back button */
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-muted);
+            margin-bottom: 1.75rem;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s;
+            border: none;
+            background: none;
+        }
+
+        .back-button:hover {
+            color: var(--accent-light);
+        }
+
+        .back-button svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* ═══════════════════════════════════════════
+           UPLOAD AREA
+        ═══════════════════════════════════════════ */
+        .upload-area {
+            border: 2px dashed var(--border);
+            border-radius: var(--radius-lg);
+            padding: 3rem 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .upload-area::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--accent-gradient);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .upload-area:hover {
+            border-color: var(--accent);
+            box-shadow: inset 0 0 30px rgba(99, 102, 241, 0.06);
+        }
+
+        .upload-area:hover::before {
+            opacity: 0.03;
+        }
+
+        .upload-area.dragover {
+            border-color: var(--accent);
+            background: rgba(99, 102, 241, 0.06);
+        }
+
+        .upload-icon-wrap {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: var(--bg-glass);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 1.75rem;
+            position: relative;
+        }
+
+        .upload-text {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+            position: relative;
+        }
+
+        .upload-subtext {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            position: relative;
+        }
+
+        /* ═══════════════════════════════════════════
+           FILE LIST (after upload)
+        ═══════════════════════════════════════════ */
+        .file-list {
+            margin-top: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .file-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.25rem;
+            border-radius: var(--radius-md);
+            background: var(--bg-glass);
+            border: 1px solid var(--border);
+            gap: 1rem;
+            flex-wrap: wrap;
+            animation: fadeInUp 0.35s ease-out;
+        }
+
+        .file-icon-wrap {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-sm);
+            background: var(--accent-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .file-info {
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .file-name {
+            font-weight: 600;
+            font-size: 0.925rem;
+            color: var(--text-primary);
+            word-break: break-all;
+        }
+
+        .file-code-display {
+            font-size: 0.8rem;
+            color: var(--accent-light);
+            font-weight: 500;
+            margin-top: 0.15rem;
+        }
+
+        .file-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        /* ═══════════════════════════════════════════
+           CODE DISPLAY (prominent after upload)
+        ═══════════════════════════════════════════ */
+        .code-display-section {
+            display: none;
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            border-radius: var(--radius-lg);
+            background: var(--bg-glass);
+            border: 1px solid var(--border-accent);
+            animation: fadeInUp 0.4s ease-out;
+        }
+
+        .code-display-section.active {
+            display: block;
+        }
+
+        .code-display-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .code-display-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: 0.3em;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.75rem;
+            font-family: 'Inter', monospace;
+        }
+
+        .code-display-hint {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .code-copy-btn {
+            padding: 0.6rem 1.5rem;
+            border: 1px solid var(--border-accent);
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--accent-light);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.875rem;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+
+        .code-copy-btn:hover {
+            background: rgba(99, 102, 241, 0.2);
+            border-color: var(--accent);
+        }
+
+        /* ═══════════════════════════════════════════
+           BUTTONS
+        ═══════════════════════════════════════════ */
+        .btn {
+            padding: 0.7rem 1.25rem;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            font-size: 0.85rem;
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--accent-gradient);
+            color: white;
+            box-shadow: 0 4px 16px var(--accent-glow);
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-gradient-h);
+            box-shadow: 0 6px 24px var(--accent-glow);
+            transform: translateY(-1px);
+        }
+
+        .btn-ghost {
+            background: var(--bg-glass);
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-ghost:hover {
+            background: var(--bg-glass-hover);
+            border-color: var(--border-hover);
+            color: var(--text-primary);
+        }
+
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.8rem;
+        }
+
+        .btn-block {
+            display: flex;
+            width: 100%;
+        }
+
+        /* ═══════════════════════════════════════════
+           RECEIVE — 6-DIGIT CODE INPUT
+        ═══════════════════════════════════════════ */
+        .receive-form {
+            max-width: 440px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .code-input-group {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .code-input-box {
+            width: 52px;
+            height: 64px;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-md);
+            background: var(--bg-glass);
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            font-weight: 700;
+            font-family: 'Inter', monospace;
+            text-align: center;
+            text-transform: uppercase;
+            outline: none;
+            caret-color: var(--accent);
+            transition: all 0.2s ease;
+        }
+
+        .code-input-box:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+            background: rgba(99, 102, 241, 0.06);
+        }
+
+        .code-input-box.filled {
+            border-color: var(--accent-light);
+            background: rgba(99, 102, 241, 0.06);
+        }
+
+        .code-input-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            margin-bottom: 1.25rem;
+        }
+
+        .receive-divider {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 1.5rem 0;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .receive-divider::before,
+        .receive-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        /* ═══════════════════════════════════════════
+           SUCCESS MESSAGE
+        ═══════════════════════════════════════════ */
+        .success-message {
+            background: var(--success-bg);
+            border: 1px solid rgba(16, 185, 129, 0.25);
+            color: var(--success);
+            padding: 0.875rem 1.25rem;
+            border-radius: var(--radius-md);
+            margin-top: 1.5rem;
+            display: none;
+            align-items: center;
+            gap: 0.625rem;
+            font-weight: 500;
+            font-size: 0.9rem;
+            animation: fadeInUp 0.3s ease-out;
+        }
+
+        .success-message.visible {
+            display: flex;
+        }
+
+        /* ═══════════════════════════════════════════
+           LOADING SPINNER
+        ═══════════════════════════════════════════ */
+        .loading-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 14, 26, 0.75);
+            backdrop-filter: blur(8px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+        }
+
+        .loading-overlay.visible {
+            display: flex;
+        }
+
+        .loading-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 2rem 3rem;
+            text-align: center;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* ═══════════════════════════════════════════
+           QR CODE MODAL
+        ═══════════════════════════════════════════ */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 14, 26, 0.8);
+            backdrop-filter: blur(8px);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+
+        .modal-overlay.visible {
+            display: flex;
+        }
+
+        .modal-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-xl);
+            padding: 2rem;
+            max-width: 380px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            box-shadow: var(--shadow-lg);
+            animation: fadeInUp 0.3s ease-out;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--bg-glass);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            transition: all 0.2s;
+        }
+
+        .modal-close:hover {
+            background: var(--bg-glass-hover);
+            color: var(--text-primary);
+        }
+
+        .modal-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 1.25rem;
+            color: var(--text-primary);
+        }
+
+        #qrCode {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1.25rem;
+            padding: 1rem;
+            background: white;
+            border-radius: var(--radius-md);
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .modal-hint {
+            font-size: 0.825rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* ═══════════════════════════════════════════
+           FOOTER
+        ═══════════════════════════════════════════ */
+        .footer {
+            margin-top: 2rem;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        .footer a {
+            color: var(--accent-light);
+            text-decoration: none;
+        }
+
+        /* ═══════════════════════════════════════════
+           SCAN QR BUTTON (mobile only)
+        ═══════════════════════════════════════════ */
+        .scan-qr-btn {
+            display: none;
+        }
+
+        /* ═══════════════════════════════════════════
+           TOAST NOTIFICATION
+        ═══════════════════════════════════════════ */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius-md);
+            font-size: 0.85rem;
+            font-weight: 500;
+            box-shadow: var(--shadow-md);
+            z-index: 300;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+        }
+
+        .toast.visible {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .toast.success {
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+
+        .toast.error {
+            border-color: rgba(239, 68, 68, 0.3);
+        }
+
+        /* ═══════════════════════════════════════════
+           RESPONSIVE
+        ═══════════════════════════════════════════ */
+        @media (max-width: 640px) {
+            body {
+                padding: 1rem;
+            }
+
+            .choice-buttons {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+
+            .choice-button {
+                flex-direction: row;
+                min-width: 100%;
+                padding: 1.25rem 1.5rem;
+                gap: 1rem;
+            }
+
+            .choice-icon {
+                width: 48px;
+                height: 48px;
+                font-size: 1.35rem;
+            }
+
+            .choice-section {
+                padding: 2rem 1.5rem;
+            }
+
+            .send-section,
+            .receive-section {
+                padding: 2rem 1.5rem;
+            }
+
+            .upload-area {
+                padding: 2rem 1.5rem;
+            }
+
+            .code-input-box {
+                width: 44px;
+                height: 56px;
+                font-size: 1.25rem;
+            }
+
+            .code-display-value {
+                font-size: 2rem;
+            }
+
+            .scan-qr-btn {
+                display: flex;
+            }
+
+            .section-title {
+                font-size: 1.375rem;
+            }
+
+            .file-actions {
+                width: 100%;
+                margin-top: 0.5rem;
+            }
+
+            .file-actions .btn {
+                flex: 1;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .code-input-box {
+                width: 38px;
+                height: 50px;
+                font-size: 1.1rem;
+            }
+
+            .code-input-group {
+                gap: 0.35rem;
+            }
+
+            .code-display-value {
+                font-size: 1.6rem;
+                letter-spacing: 0.2em;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-card">
+            <div class="spinner"></div>
+            <p class="loading-text">Uploading your file...</p>
+        </div>
+    </div>
+
+    <!-- QR Code Modal -->
+    <div class="modal-overlay" id="qrModal">
+        <div class="modal-card">
+            <button class="modal-close" id="qrModalClose" aria-label="Close QR modal">✕</button>
+            <h3 class="modal-title">Scan to Download</h3>
+            <div id="qrCode"></div>
+            <p class="modal-hint">Point your phone camera at this QR code to instantly download the file.</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Logo -->
+        <div class="logo">
+            <div class="logo-icon">⚡</div>
+            <span class="logo-text">FileShare</span>
+        </div>
+
+        <!-- Main Content Card -->
+        <main class="main-content">
+
+            <!-- ═══ CHOICE SECTION ═══ -->
+            <section class="choice-section" id="choiceSection">
+                <h1 class="section-title">Send or Receive Files Instantly</h1>
+                <p class="section-subtitle">Share files across any device with a simple 6-digit code. No sign-up needed.</p>
+
+                <div class="choice-buttons">
+                    <div class="choice-button" id="sendBtn" role="button" tabindex="0">
+                        <div class="choice-icon">📤</div>
+                        <div class="choice-label">Send Files</div>
+                    </div>
+                    <div class="choice-button" id="receiveBtn" role="button" tabindex="0">
+                        <div class="choice-icon">📥</div>
+                        <div class="choice-label">Receive Files</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═══ SEND SECTION ═══ -->
+            <section class="send-section" id="sendSection" aria-label="Send files">
+                <button class="back-button" id="sendBackBtn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+                    Back
+                </button>
+
+                <h2 class="section-title">Send Files</h2>
+                <p class="section-subtitle">Upload your files and share the 6-digit code with the receiver.</p>
+
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-icon-wrap">☁️</div>
+                    <h3 class="upload-text">Drag & Drop Files Here</h3>
+                    <p class="upload-subtext">or click to browse your files</p>
+                </div>
+
+                <!-- Code Display (appears after upload) -->
+                <div class="code-display-section" id="codeDisplaySection">
+                    <div class="code-display-label">Your Share Code</div>
+                    <div class="code-display-value" id="codeDisplayValue">------</div>
+                    <div class="code-display-hint">Share this code with the receiver — they enter it to download your file</div>
+                    <button class="code-copy-btn" id="codeCopyBtn">📋 Copy Code</button>
+                </div>
+
+                <!-- File List -->
+                <div class="file-list" id="fileList"></div>
+
+                <!-- Success Message -->
+                <div class="success-message" id="successMessage">
+                    <span>✅</span>
+                    File uploaded successfully! Share the code above.
+                </div>
+            </section>
+
+            <!-- ═══ RECEIVE SECTION ═══ -->
+            <section class="receive-section" id="receiveSection" aria-label="Receive files">
+                <button class="back-button" id="receiveBackBtn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+                    Back
+                </button>
+
+                <h2 class="section-title">Receive Files</h2>
+                <p class="section-subtitle">Enter the 6-digit code shared with you to download the file.</p>
+
+                <div class="receive-form">
+                    <p class="code-input-label">Enter your 6-digit code</p>
+                    <div class="code-input-group" id="codeInputGroup">
+                        <input type="text" class="code-input-box" maxlength="1" data-index="0" autocomplete="off" aria-label="Code digit 1" id="codeBox0">
+                        <input type="text" class="code-input-box" maxlength="1" data-index="1" autocomplete="off" aria-label="Code digit 2" id="codeBox1">
+                        <input type="text" class="code-input-box" maxlength="1" data-index="2" autocomplete="off" aria-label="Code digit 3" id="codeBox2">
+                        <input type="text" class="code-input-box" maxlength="1" data-index="3" autocomplete="off" aria-label="Code digit 4" id="codeBox3">
+                        <input type="text" class="code-input-box" maxlength="1" data-index="4" autocomplete="off" aria-label="Code digit 5" id="codeBox4">
+                        <input type="text" class="code-input-box" maxlength="1" data-index="5" autocomplete="off" aria-label="Code digit 6" id="codeBox5">
+                    </div>
+
+                    <button class="btn btn-primary btn-block" id="downloadBtn">
+                        📥 Download File
+                    </button>
+
+                    <div class="receive-divider">or</div>
+
+                    <button class="btn btn-ghost btn-block scan-qr-btn" id="scanQrBtn">
+                        📷 Scan QR Code
+                    </button>
+                </div>
+            </section>
+
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2025 <a href="#">Ashley Almeida</a>. Instant, secure file sharing.</p>
+        </footer>
+    </div>
+
+    <script>
+        // ═══════════════════════════════════════════
+        //  DOM REFERENCES
+        // ═══════════════════════════════════════════
+        const $ = (sel) => document.querySelector(sel);
+        const $$ = (sel) => document.querySelectorAll(sel);
+
+        const choiceSection = $('#choiceSection');
+        const sendSection = $('#sendSection');
+        const receiveSection = $('#receiveSection');
+        const uploadArea = $('#uploadArea');
+        const fileList = $('#fileList');
+        const loadingOverlay = $('#loadingOverlay');
+        const successMessage = $('#successMessage');
+        const codeDisplaySection = $('#codeDisplaySection');
+        const codeDisplayValue = $('#codeDisplayValue');
+        const qrModal = $('#qrModal');
+        const qrCodeEl = $('#qrCode');
+        const toastEl = $('#toast');
+        const codeBoxes = $$('.code-input-box');
+
+        let lastUploadedCode = '';
+
+        // ═══════════════════════════════════════════
+        //  TOAST NOTIFICATIONS
+        // ═══════════════════════════════════════════
+        function showToast(message, type = '') {
+            toastEl.textContent = message;
+            toastEl.className = 'toast' + (type ? ' ' + type : '');
+            // Force reflow
+            void toastEl.offsetWidth;
+            toastEl.classList.add('visible');
+            setTimeout(() => {
+                toastEl.classList.remove('visible');
+            }, 2500);
+        }
+
+        // ═══════════════════════════════════════════
+        //  SECTION NAVIGATION
+        // ═══════════════════════════════════════════
+        function showSection(section) {
+            choiceSection.style.display = 'none';
+            sendSection.classList.remove('active');
+            receiveSection.classList.remove('active');
+
+            if (section === 'choice') {
+                choiceSection.style.display = '';
+            } else if (section === 'send') {
+                sendSection.classList.add('active');
+            } else if (section === 'receive') {
+                receiveSection.classList.add('active');
+                // Focus first code box
+                setTimeout(() => codeBoxes[0]?.focus(), 100);
+            }
+        }
+
+        $('#sendBtn').addEventListener('click', () => showSection('send'));
+        $('#receiveBtn').addEventListener('click', () => showSection('receive'));
+        $('#sendBackBtn').addEventListener('click', () => showSection('choice'));
+        $('#receiveBackBtn').addEventListener('click', () => showSection('choice'));
+
+        // Keyboard support for choice buttons
+        $$('.choice-button').forEach(btn => {
+            btn.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    btn.click();
+                }
+            });
+        });
+
+        // ═══════════════════════════════════════════
+        //  LOADING OVERLAY
+        // ═══════════════════════════════════════════
+        function showLoading() { loadingOverlay.classList.add('visible'); }
+        function hideLoading() { loadingOverlay.classList.remove('visible'); }
+
+        // ═══════════════════════════════════════════
+        //  QR CODE MODAL
+        // ═══════════════════════════════════════════
+        function showQrCode(url) {
+            qrCodeEl.innerHTML = '';
+            new QRCode(qrCodeEl, {
+                text: url,
+                width: 200,
+                height: 200,
+                colorDark: '#000000',
+                colorLight: '#ffffff',
+                correctLevel: QRCode.CorrectLevel.M
+            });
+            qrModal.classList.add('visible');
+        }
+
+        function closeQrModal() {
+            qrModal.classList.remove('visible');
+        }
+
+        $('#qrModalClose').addEventListener('click', closeQrModal);
+        qrModal.addEventListener('click', (e) => {
+            if (e.target === qrModal) closeQrModal();
+        });
+
+        // ═══════════════════════════════════════════
+        //  CLIPBOARD COPY
+        // ═══════════════════════════════════════════
+        async function copyText(text) {
+            try {
+                await navigator.clipboard.writeText(text);
+                showToast('Copied to clipboard!', 'success');
+            } catch {
+                // Fallback
+                const ta = document.createElement('textarea');
+                ta.value = text;
+                ta.style.position = 'fixed';
+                ta.style.left = '-9999px';
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+                showToast('Copied to clipboard!', 'success');
+            }
+        }
+
+        // ═══════════════════════════════════════════
+        //  FILE UPLOAD HANDLER
+        // ═══════════════════════════════════════════
+        async function uploadFile(file) {
+            const formData = new FormData();
+            formData.append('file', file);
+
+            showLoading();
+
+            try {
+                const response = await fetch('/upload', {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                const result = await response.json();
+
+                if (result.code) {
+                    lastUploadedCode = result.code;
+                    const shortUrl = window.location.origin + '/c/' + result.code;
+
+                    // Show prominent code display
+                    codeDisplayValue.textContent = result.code;
+                    codeDisplaySection.classList.add('active');
+
+                    // Add file item
+                    const fileItem = document.createElement('div');
+                    fileItem.className = 'file-item';
+                    fileItem.innerHTML = `
+                        <div class="file-icon-wrap">📄</div>
+                        <div class="file-info">
+                            <div class="file-name">${escapeHtml(file.name)}</div>
+                            <div class="file-code-display">Code: ${result.code}</div>
+                        </div>
+                        <div class="file-actions">
+                            <button class="btn btn-ghost btn-sm" onclick="copyText('${result.code}')">📋 Code</button>
+                            <button class="btn btn-ghost btn-sm" onclick="copyText('${shortUrl}')">🔗 URL</button>
+                            <button class="btn btn-ghost btn-sm" onclick="showQrCode('${shortUrl}')">📱 QR</button>
+                        </div>
+                    `;
+                    fileList.appendChild(fileItem);
+
+                    // Show success
+                    successMessage.classList.add('visible');
+                } else {
+                    showToast('Error uploading file', 'error');
+                }
+            } catch (error) {
+                showToast('Upload failed. Please try again.', 'error');
+            }
+
+            hideLoading();
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // ═══════════════════════════════════════════
+        //  DRAG & DROP
+        // ═══════════════════════════════════════════
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', async (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            for (const file of files) {
+                await uploadFile(file);
+            }
+        });
+
+        // Click to upload
+        uploadArea.addEventListener('click', () => {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.multiple = true;
+            input.style.display = 'none';
+            document.body.appendChild(input);
+
+            input.addEventListener('change', async (e) => {
+                for (const file of e.target.files) {
+                    await uploadFile(file);
+                }
+                document.body.removeChild(input);
+            });
+            input.click();
+        });
+
+        // Copy code button
+        $('#codeCopyBtn').addEventListener('click', () => {
+            if (lastUploadedCode) {
+                copyText(lastUploadedCode);
+            }
+        });
+
+        // ═══════════════════════════════════════════
+        //  6-DIGIT CODE INPUT (OTP-style)
+        // ═══════════════════════════════════════════
+        codeBoxes.forEach((box, index) => {
+            box.addEventListener('input', (e) => {
+                const val = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+                e.target.value = val;
+
+                if (val && index < codeBoxes.length - 1) {
+                    codeBoxes[index + 1].focus();
+                }
+
+                // Update visual state
+                box.classList.toggle('filled', val.length > 0);
+
+                // Auto-submit when all filled
+                const fullCode = getCodeValue();
+                if (fullCode.length === 6) {
+                    downloadByCode(fullCode);
+                }
+            });
+
+            box.addEventListener('keydown', (e) => {
+                if (e.key === 'Backspace' && !e.target.value && index > 0) {
+                    codeBoxes[index - 1].focus();
+                    codeBoxes[index - 1].value = '';
+                    codeBoxes[index - 1].classList.remove('filled');
+                }
+            });
+
+            // Handle paste
+            box.addEventListener('paste', (e) => {
+                e.preventDefault();
+                const pasted = (e.clipboardData.getData('text') || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+                for (let i = 0; i < Math.min(pasted.length, 6); i++) {
+                    codeBoxes[i].value = pasted[i];
+                    codeBoxes[i].classList.add('filled');
+                }
+                const focusIdx = Math.min(pasted.length, 5);
+                codeBoxes[focusIdx].focus();
+
+                if (pasted.length >= 6) {
+                    downloadByCode(pasted.substring(0, 6));
+                }
+            });
+        });
+
+        function getCodeValue() {
+            return Array.from(codeBoxes).map(b => b.value).join('');
+        }
+
+        // ═══════════════════════════════════════════
+        //  DOWNLOAD BY CODE
+        // ═══════════════════════════════════════════
+        function downloadByCode(code) {
+            if (!code || code.length !== 6) {
+                showToast('Please enter a valid 6-digit code', 'error');
+                return;
+            }
+            window.location.href = '/c/' + code.toUpperCase();
+        }
+
+        $('#downloadBtn').addEventListener('click', () => {
+            downloadByCode(getCodeValue());
+        });
+
+        // ═══════════════════════════════════════════
+        //  SCAN QR (Mobile)
+        // ═══════════════════════════════════════════
+        $('#scanQrBtn').addEventListener('click', () => {
+            const ua = navigator.userAgent || navigator.vendor || window.opera;
+            if (/android/i.test(ua)) {
+                window.location.href = 'googleapp://googlelens';
+                setTimeout(() => {
+                    window.location.href = 'https://lens.google.com/';
+                }, 800);
+            } else if (/iPad|iPhone|iPod/.test(ua)) {
+                window.location.href = 'https://lens.google.com/';
+            } else {
+                window.location.href = 'https://lens.google.com/';
+            }
+        });
+
+    </script>
+</body>
+
+</html>
